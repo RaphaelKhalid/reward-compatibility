@@ -7,8 +7,8 @@ An exploratory measurement study based on [Kaufmann et al. (2026)](https://arxiv
 - [AutoLabs interface repository](https://github.com/RaphaelKhalid/autolabs)
 - [Protocol, limitations and declared deviations](PROTOCOL.md)
 - [Public status](https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev/status)
-- [Visible output logs](https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev/logs) (`?offset=10` pagination)
-- [Scored records](https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev/results) (`?offset=20` pagination)
+- [Visible output logs](https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev/logs) (follow the returned `next` offset)
+- [Scored records](https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev/results) (follow the returned `next` offset)
 - [Final analysis](https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev/analysis) (sealed until completion)
 
 ## Scope
@@ -37,6 +37,12 @@ Use a random owner token of at least 16 characters. Trigger `POST /admin/start` 
 Cloudflare alarms own execution; the browser is a read-only observer. The five-minute scheduled watchdog repairs missing alarms, not failed scientific gates. A model-call checkpoint is persisted before proceeding. Unknown request outcomes keep their reserved maximum charge. No blind retry. Public reads are cached and paginated. Evaluation prompts/results are not released until completion and never enter replay or reporter context.
 
 ## Analysis
+
+### Execution and ledger safeguards
+
+Operational revision `parallel-ledger-v1` was introduced while owner-paused at main cursor 35 on 2026-09-10. Up to three independent sample pipelines execute concurrently within a unit; optimization units, replay updates, sample ordering, prompts, identifiers, and the registered study design remain unchanged. Resume reuses completed calls. In-flight calls drain before checkpoint release; reservations are committed before network dispatch against the same $40 cap.
+
+Transcripts remain separate SQLite rows, not a growing state blob. Replay entries are also separate rows (legacy buffers remain readable). Records exceeding 1.5 MB fail closed without truncation; public pages target 512 KiB, serving a larger individual record alone. Clients must follow `next`, not assume fixed offsets. A 512 MiB storage threshold, with headroom for in-flight writes, pauses new requests before exhaustion. Final analysis projects only required scores in SQLite instead of loading all transcripts. The public status reports concurrency and actual storage usage. These protections reduce overflow risk; they are not a guarantee against every platform failure.
 
 `src/analysis.ts` builds repeat-level paired effects from exported records. The final figure compares frozen diagnostic estimates with observed additional monitoring loss, alongside correctness and reward attainment. Confidence intervals use independent histories, not thousands of correlated individual completions. All reward families, failures and inconclusive outcomes remain in the record. Human evidence audit is required before strong claims.
 

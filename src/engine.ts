@@ -2,8 +2,11 @@ import {type Unit,type UnitResult,type Replay,type Problem,type Sample,type Conf
 import {ACTOR,actorPrompt,transferPrompt,monitorPrompt,processPrompt,preferencePrompt,auditPrompt,auditFixture,monitorFixture,descriptionPrompt} from './prompts';
 import {rating,evidence,record} from './api';
 export type Call = (id:string,prompt:string,effort:'none'|'high')=>Promise<string>;
+import {mapConcurrent,CONCURRENCY} from './operations';
 
 export async function executeUnit(u:Unit,call:Call,buffer:Replay[],operationalSummary:string):Promise<UnitResult> {
+  const invoke=call;let failure:unknown;
+  call=async(...args)=>{if(failure)throw failure;try{return await invoke(...args);}catch(error){failure??=error;throw error;}};
   const base:UnitResult={...u};
   if(u.kind==='actor-check') {
     const index=u.index??0,p=problem('gate',`actor-check-${index<12?6:42}`,index%12,index<12?6:42);
@@ -41,13 +44,12 @@ export async function executeUnit(u:Unit,call:Call,buffer:Replay[],operationalSu
     return {problem:p,completion,score:{correct,rcot,total:correct+(condition==='combined'?rcot:0),length:[...reasoning].length,monitor,evidence:auditResult}};
   }
   if(u.kind==='eval') {
-    const samples:Sample[]=[];
     // No held-out result is used in the actor prompt or replay. Same items baseline/terminal and paired arms.
-    for(let i=0;i<10;i++) {
+    const samples=await mapConcurrent(Array.from({length:10},(_,i)=>i),CONCURRENCY,async i=>{
       const p=problem('heldout',`eval-${c.id}-${u.repeat}`,i,c.steps);
       const raw=await call(`actor-${i}`,actorPrompt(p,c,condition,u.phase==='baseline'?[]:buffer,`eval-prompt-${c.id}-${u.repeat}-${i}`),'none');
-      samples.push(await score(p,raw,`eval-${i}`,false,true));
-    }
+      return score(p,raw,`eval-${i}`,false,true);
+    });
     return {...base,samples};
   }
   const split=u.phase==='diagnostic'?'diagnostic':u.phase==='gate'?'gate':'train';
@@ -55,13 +57,13 @@ export async function executeUnit(u:Unit,call:Call,buffer:Replay[],operationalSu
   const offset=(u.step??0)%2;
   const original=problem(split,seed,offset,c.steps);
   const raw=await call('candidate',actorPrompt(original,c,condition,u.phase==='train'?buffer:[],seed,u.phase==='diagnostic'),'none');
-  const completion=parseCompletion(raw),samples:Sample[]=[];
+  const completion=parseCompletion(raw);
   // A common permutation and indices 1..5 ensure five distinct fresh tasks, excluding the original.
-  for(let i=1;i<=5;i++) {
+  const samples=await mapConcurrent([1,2,3,4,5],CONCURRENCY,async i=>{
     const p=problem(split,seed,i+offset,c.steps);
     const transferred=await call(`transfer-${i}`,transferPrompt(p,original,completion,c,condition),'none');
-    samples.push(await score(p,transferred,`score-${i}`,u.phase==='diagnostic',false));
-  }
+    return score(p,transferred,`score-${i}`,u.phase==='diagnostic',false);
+  });
   const reward=samples.reduce((a,s)=>a+s.score.total,0)/samples.length;
   return {...base,samples,replay:{id:u.id,problem:original,completion,reward}};
 }

@@ -1,11 +1,12 @@
 import {CONFIGS,type UnitResult} from './protocol';
+export type AnalysisUnit=Omit<UnitResult,'samples'|'replay'> & {samples?:{score:{correct:number;rcot:number;length:number;monitor?:number;evidence?:{supported?:boolean|number|null}}}[]};
 const mean=(x:number[])=>x.length?x.reduce((a,b)=>a+b,0)/x.length:null;
 function interval(x:number[]) {
   const m=mean(x);if(m===null||x.length<2)return null;
   const variance=x.reduce((s,v)=>s+(v-m)**2,0)/(x.length-1),t=x.length===3?4.303:x.length===4?3.182:12.706;
   return [m-t*Math.sqrt(variance/x.length),m+t*Math.sqrt(variance/x.length)];
 }
-export function analyze(results:UnitResult[]) {
+export function analyze(results:AnalysisUnit[]) {
   const rows=CONFIGS.map(c=>{
     const diagnostics=results.filter(r=>r.phase==='diagnostic'&&r.kind==='trial'&&r.config===c.id);
     const witnessRates=diagnostics.map(r=>mean((r.samples??[]).map(s=>Number(s.score.correct===1&&s.score.rcot===(c.family==='preference'?1:0)&&s.score.evidence?.supported)))??0);
