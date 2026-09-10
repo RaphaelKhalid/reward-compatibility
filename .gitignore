@@ -7,4 +7,8 @@ worker-configuration.d.ts
 coverage/
 data/private/
 *.log
-
+tmp/
+paper/*.aux
+paper/*.out
+paper/*.toc
+paper/*.synctex.gz
