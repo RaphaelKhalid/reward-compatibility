@@ -38,6 +38,8 @@ Cloudflare alarms own execution; the browser is a read-only observer. The five-m
 
 ## Analysis
 
+The [LaTeX manuscript](paper/main.tex), [compiled PDF](output/pdf/main.pdf), and [completion/submission checklist](paper/README.md) are available as a **pre-results draft**. Numerical results and conclusions remain pending final export and human audit; the draft is not an arXiv submission.
+
 ### Execution and ledger safeguards
 
 Operational revision `parallel-ledger-v1` was introduced while owner-paused at main cursor 35 on 2026-09-10. Up to three independent sample pipelines execute concurrently within a unit; optimization units, replay updates, sample ordering, prompts, identifiers, and the registered study design remain unchanged. Resume reuses completed calls. In-flight calls drain before checkpoint release; reservations are committed before network dispatch against the same $40 cap.

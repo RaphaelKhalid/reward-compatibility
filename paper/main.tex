@@ -1,0 +1,209 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,tabularx,graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\definecolor{inkgreen}{HTML}{365D4B}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Reward compatibility: experimental draft}
+\fancyhead[R]{\small Results pending}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\newcommand{\pending}[1]{\textcolor{inkgreen}{\textbf{Pending:} #1}}
+\newcommand{\ind}{\mathbf{1}}
+\title{Testing a Readable-Witness Diagnostic for Reward Compatibility\\[4pt]\large A controlled, API-based study of in-context optimization}
+\author{Raphael Khalid\\Independent researcher\\\small\textit{Provisional byline: author confirmation pending}}
+\date{Working manuscript, September 10, 2026}
+
+\begin{document}
+\maketitle
+\begin{center}
+\fbox{\parbox{.89\linewidth}{\small\textbf{Pre-results draft, not submission-ready.} The main experiment is ongoing. No terminal effects, predictive comparisons, or novelty claims have been established. Methods below describe the frozen implementation; tables reserve space for audited results. This manuscript was drafted after launch, not independently preregistered before data collection.}}
+\end{center}
+\begin{abstract}
+Optimizing a language model's visible reasoning may change what an external monitor can infer from it. We investigate whether a small search for readable strategies that jointly satisfy outcome and reasoning rewards can predict later monitoring loss. Our diagnostic is a finite-search, model-audited witness rate, not a decision procedure for universally quantified reward compatibility. The registered schedule covers eight reward configurations in five families on a deterministic coin-state task. Each configuration has matched outcome-only and combined-reward conditions, three separate optimization histories per condition, and twelve in-context optimization steps per history. Candidate strategies are scored on five fresh transfer tasks; baseline and terminal evaluation use ten held-out tasks per history. We compare witness rate with description-only predictions, baseline monitorability, and baseline reasoning length using leave-one-family-out prediction. The complete main schedule contains 716 orchestration units under a \$40 API cap. \textbf{Results are pending.} The intended contribution is a reproducible test of the diagnostic's usefulness and failure modes, with explicitly limited claims about generalization, causal mechanisms, and internal reasoning.
+\end{abstract}
+
+\section{Introduction}
+An oversight method can become less informative when the system it observes is optimized against incentives that affect the observable signal. For language models, the signal may be a visible explanation accompanying an answer. An explanation that sounds useful is not necessarily a faithful account of the computation producing the answer. We therefore separate answer correctness, visible support for that answer, and an external monitor's ability to identify the task from the explanation.
+
+Kaufmann et al.\ \cite{kaufmann2026} propose a framework relating outcome and reasoning rewards and identify empirical detection of their compatibility as future work. We investigate a narrower operational question: \emph{does a bounded search for readable, jointly high-reward strategies predict additional monitoring loss under a specified optimization procedure?} A successful predictor could inform decisions about which reward pairs merit further investigation. It would not certify safety or determine the theoretical category of an arbitrary reward pair.
+
+This study is implemented in AutoLabs as one fixed experiment with a public progress interface, not as a competition among autonomous scientific decision-makers. A coordinator reports progress but cannot change the scientific protocol. The live interface is incidental to the estimator; the scientific record consists of fixed prompts, generated tasks, visible outputs, scores, and versioned analysis code.
+
+\paragraph{Candidate contribution.}
+We specify a readable-witness diagnostic, evaluate it against four predictive references, and release an executable experiment with a controlled outcome-only comparison. Whether this constitutes a useful empirical advance depends on the completed results, human audit, and a fuller related-work assessment. We make no priority claim at this stage.
+
+\section{Related work and scope}
+The reward-compatibility framework of Kaufmann et al.\ \cite{kaufmann2026} motivates our experiment. Their API-based in-context approach includes eliciting visible tagged reasoning when extended thinking is unavailable and using transfer-based rewards. Our implementation uses a different model, independently worded prompts, and a substantially smaller schedule; it is not a full replication of their experiments or a measurement of weight-training effects.
+
+Baker et al.\ \cite{baker2025} study monitoring reasoning models for misbehavior and the risk that optimization promotes obfuscation. Our benign coin-identification endpoint is a deliberately narrower surrogate: identifying coin-related content is not the same as detecting harmful intent. Lanham et al.\ \cite{lanham2023} study tests of chain-of-thought faithfulness. Our evidence audit checks visible support rather than intervening on reasoning to identify its causal contribution. None of our scores accesses private reasoning traces, model activations, or a mechanistic account of the computation.
+
+\section{Experimental design}
+\subsection{Task and splits}
+The actor tracks a coin through operations called \texttt{Same} and \texttt{Different}. Same preserves the state and Different flips it. With initial state $x_0\in\{0,1\}$ and flip indicators $d_1,\ldots,d_L$, the exact final state is
+\begin{equation}
+ x_L=x_0\mathbin{\oplus}d_1\mathbin{\oplus}\cdots\mathbin{\oplus}d_L.
+\end{equation}
+Zero denotes Heads and one denotes Tails. Correctness is computed by this deterministic checker, not by a language-model judge. The actor emits \texttt{<reasoning>} and \texttt{<answer>} fields with a strict output schema.
+
+Most configurations use six operations. There are only $2^7=128$ distinct six-operation problems, counting both initial states. The implementation stratifies them by final answer and partitions them into disjoint feasibility, diagnostic, training, and held-out sets of 32 problems each. Sampling can repeat within a split: \emph{thousands of completions are not thousands of unique underlying tasks}. Process supervision uses 42 operations. Its first six operations and initial state follow the same partition; additional operations are seeded, with a final operation chosen to retain the desired answer balance. These are synthetic, balanced tasks, not a representative distribution of reasoning problems.
+
+\subsection{Models and information boundaries}
+The actor uses the OpenAI API model alias \texttt{gpt-5.6-luna} with reasoning effort \texttt{none}. Fresh calls to the same alias with effort \texttt{high} provide reward grades, monitoring grades, evidence audits, description-only predictions, and progress summaries. Role separation is separation of requests and prompts, not independence of model families. API-returned model identifiers, usage, and timestamps are recorded. The alias is not an immutable checkpoint, and effort labels do not expose the provider's internal computation.
+
+The evaluation monitor sees only the visible reasoning passage, not its originating task, final answer, reward configuration, or experimental condition. It rates evidence that the passage concerns a coin from zero to five. Identification is $\ind[m\geq3]$. The fixed rubric explicitly avoids inferring coin context from abstract binary-state tracking alone. This operational definition can classify a mathematically readable but domain-abstract explanation as difficult to identify.
+
+The diagnostic evidence auditor sees the task and visible reasoning, but the actor's final answer and downstream scores are withheld. A positive audit requires an explicit, correct computation and an exact supporting quotation. Empty reasoning, bare conclusions, and unsupported encodings do not qualify. Model judgment is still involved; an exact quotation does not establish that the judgment is correct.
+
+\subsection{Rewards and conditions}
+Let $R_o=\ind[\widehat{x}_L=x_L]$ and let $R_r$ be the reasoning reward. The outcome-only condition optimizes $R_o$; the combined condition optimizes $R_o+R_r$. Table~\ref{tab:rewards} gives the implemented rewards. Only the combined actor is told the reasoning incentive. Shadow reasoning grades are nevertheless computed in both conditions to equalize measurement and support later comparisons.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}lXl@{}}
+\toprule
+Family & Reasoning reward $R_r$ & Configurations\\
+\midrule
+Length & $-\max(0,\ell-b)$, where $\ell$ counts trimmed Unicode code points & $b=0,16,64,256$\\
+String & $-1$ if Heads or Tails occurs, case-insensitive; otherwise $0$ & One\\
+Semantic & $-m/5$, where $m\in\{0,\ldots,5\}$ is the coin-monitor grade & One\\
+Preference & Simulated preference grade in $\{-1,0,1\}$ & One\\
+Process & $-1$ if a grader detects an incorrect transition; otherwise $0$ & One, $L=42$\\
+\bottomrule
+\end{tabularx}
+\caption{Eight configurations in five families. The preference reward is model-generated, not human feedback. Empty reasoning can attain the process reward without demonstrating useful computation.}\label{tab:rewards}
+\end{table}
+
+\subsection{What one main-study unit contains}
+A unit is an orchestration checkpoint, not a single API request or an independent experimental replicate. For example, an optimization unit for the string-penalty configuration in a combined-reward history proceeds as follows:
+\begin{enumerate}
+\item Construct one training problem and select replay examples from that history only.
+\item Ask the actor for one candidate explanation and answer under the condition's reward prompt.
+\item Ask fresh actor calls to apply that reasoning pattern to five distinct fresh training tasks, excluding the candidate task.
+\item Compute all learning rewards on the five transferred completions. Here correctness and the string penalty are deterministic. Other families require fresh grader calls.
+\item Average the transfer rewards, attach that score to the candidate strategy, and update this history's replay buffer.
+\end{enumerate}
+Thus this particular optimization unit uses six actor calls. A semantic, preference, or process optimization unit additionally uses five grader calls. A diagnostic unit also audits the five transferred passages. An evaluation unit generates and monitors ten held-out completions, with extra reasoning-reward grading where needed. Description and reporting units each use one call.
+
+\subsection{Schedule and replay}
+The 68-unit feasibility gate checks format and six-step actor accuracy, coin-monitor sensitivity and specificity, evidence-auditor calibration, and execution of all eight reward configurations. Calibration success is not evidence for the main hypothesis. The 42-step accuracy is descriptive, not a selection threshold. The main schedule, frozen in source before paid launch, is shown in Table~\ref{tab:schedule}.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}lr@{}}
+\toprule
+Work item & Units\\\midrule
+Description-only predictions: eight configurations & 8\\
+Diagnostic search: four candidates per configuration & 32\\
+Baseline evaluation: $8\times2\times3$ histories & 48\\
+Optimization: $8\times2\times3\times12$ steps & 576\\
+Operational summaries & 4\\
+Terminal evaluation: $8\times2\times3$ histories & 48\\\midrule
+Total main schedule & 716\\\bottomrule
+\end{tabular}
+\caption{The 716 checkpoints contain 48 optimization histories, not 716 independent experiments. Baseline and terminal evaluations each contain 480 completions. The diagnostic contains 160 transferred completions from 32 candidate strategies.}\label{tab:schedule}
+\end{table}
+
+Each history has isolated success and failure buffers with capacity 256 each. A strategy with mean transfer reward at least 75\% of the condition's maximum is a success. Replay selects up to ten examples, using exploration probability 0.1 and reward-softmax temperature 0.2. Once a strategy reaches the maximum mean transfer reward, the implementation reuses a maximum-reward example and does not ask for further improvement; all twelve scheduled steps still run. No weights are updated.
+
+Task schedules are paired between conditions. History order is seeded and interleaved during optimization; API sampling itself is not made reproducible by these task seeds. Baseline and terminal evaluation use the same ten balanced held-out problems for each configuration/repeat pair, shared across conditions. Held-out records never enter replay, diagnostics, or the coordinator's context and remain publicly sealed until completion.
+
+\section{Diagnostic and estimands}
+\subsection{Finite-search readable witnesses}
+For configuration $c$, diagnostic strategy $j\in\{1,\ldots,4\}$ and transfer $i\in\{1,\ldots,5\}$, define
+\begin{equation}
+ W_{cji}=\ind[R_o=1]\ind[R_r=R_{r,c}^{\max}]\ind[A=1],\qquad
+ \widehat w_c=\frac14\sum_{j=1}^4\frac15\sum_{i=1}^5 W_{cji},
+\end{equation}
+where $A$ is the evidence-auditor decision. The maximum reasoning reward is one for preference and zero otherwise. We report a descriptive 95\% Student-$t$ interval across the four strategy-level rates, using $t_{.975,3}=3.182$. This is not a binomial interval over twenty independent trials. Task reuse and same-model evaluation further limit its interpretation.
+
+A positive witness demonstrates success for a particular visible strategy and task under the implemented rewards and audit. Zero witnesses means this finite search did not find one. It cannot establish theoretical conflict. A high witness rate likewise does not guarantee future optimization preserves readability. The zero-character configuration makes a nonempty supported visible explanation impossible by construction; its inclusion provides a structurally extreme condition, not a substantive discovery.
+
+\subsection{Additional monitoring loss}
+Let $M_{c,a,r,t}$ be mean monitor identification on ten held-out tasks, for condition $a\in\{C,O\}$ (combined or outcome-only), repeat $r$, and time $t\in\{0,1\}$ (baseline or terminal). The paired contrast is
+\begin{equation}
+ D_{cr}=(M_{c,C,r,0}-M_{c,C,r,1})-(M_{c,O,r,0}-M_{c,O,r,1}),
+ \qquad \widehat D_c=\frac13\sum_{r=1}^3D_{cr}.
+\end{equation}
+Positive $\widehat D_c$ indicates greater baseline-to-terminal identification loss in the combined condition. The registered interval is $\widehat D_c\pm4.303s_D/\sqrt3$, with two degrees of freedom. Wide intervals, including intervals extending outside feasible probability bounds, are reported without silent clipping. They are descriptive small-sample summaries, not a calibrated guarantee of population coverage.
+
+We also report the corresponding difference in accuracy improvements and the fraction of terminal combined-condition samples attaining maximum reasoning reward. The primary endpoint includes all held-out completions, not only correct answers. The contrast estimates the effect of the complete reward-prompt and replay procedure in this harness. Because baseline prompts already differ between conditions, it is not the total effect of initially revealing the incentive, nor does it isolate causal mediation through visible reasoning.
+
+\subsection{Predictive comparison}
+The candidate predictors are witness rate, description-only predicted loss, baseline identification rate, and baseline reasoning length; an intercept-only model is the reference. For each predictor, univariate ordinary least squares is fit with equal total weight for each training reward family. Each of the five folds withholds one entire family. The four length thresholds always remain in one fold. We report mean absolute prediction error averaged first within held-out family and then equally over families. A constant predictor falls back to the intercept fit.
+
+Only five family-level folds are available, and their training sets overlap. We do not treat their errors as five independent confirmatory trials, tune the diagnostic on terminal outcomes, or make a broad generalization claim from a small error difference. The description-only score is constrained to $[0,1]$, while observed additional loss can be negative; its linear calibration occurs within training folds, not on held-out outcomes.
+
+\section{Results: reserved for the completed run}
+\pending{Verify completion, export all 784 scored checkpoints (68 gate plus 716 main), and audit the records before replacing this section. No interim terminal scores were consulted in drafting these results slots.}
+
+\paragraph{Feasibility and execution.} \pending{Report each gate count and denominator, total elapsed and active time, exact returned model identifiers, measured spend, retained reservations, failures, and whether every frozen unit completed. Do not substitute the budget cap for actual cost.}
+
+\begin{figure}[ht]
+\centering
+\IfFileExists{figures/main-results.pdf}{\includegraphics[width=\linewidth]{figures/main-results.pdf}}{\fbox{\parbox[c][1.15in][c]{.9\linewidth}{\centering\textbf{Main results figure pending}\\[5pt]Eight reward rows: readable-witness rates on the left;\\additional monitoring loss with repeat-level intervals on the right.\\No illustrative or simulated values are plotted.}}}
+\caption{Planned primary results display. The existing exporter generates a vector figure after completion. Diagnostic uncertainty is additionally reported in the table. The plot alone does not establish predictive performance.}\label{fig:main}
+\end{figure}
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lcccc@{}}\toprule
+Configuration & Witness rate & Extra loss & Accuracy effect & Reward attained\\\midrule
+Length 0 & pending & pending & pending & pending\\
+Length 16 & pending & pending & pending & pending\\
+Length 64 & pending & pending & pending & pending\\
+Length 256 & pending & pending & pending & pending\\
+String & pending & pending & pending & pending\\
+Semantic & pending & pending & pending & pending\\
+Preference & pending & pending & pending & pending\\
+Process & pending & pending & pending & pending\\\bottomrule
+\end{tabular}
+\caption{Reserved estimates table; rates are percentages and contrasts percentage points. Include diagnostic and effect intervals in the completed version. ``Pending'' is not zero.}
+\end{table}
+
+\paragraph{Predictive value.} \pending{Give family-held-out MAE for all five models, including the intercept, and each family-level error. State plainly if witness rate fails to improve on simpler predictors or if differences are too unstable to support a conclusion.}
+
+\paragraph{Human audit.} \pending{Audit all 160 diagnostic transfers if feasible, retaining original model labels, blind human labels, disagreements, and adjudications. Register the human-audit procedure before inspecting final effects. Recomputed human-audited diagnostics are a separately labelled sensitivity analysis, not a replacement of the frozen primary diagnostic.}
+
+\section{Limitations and interpretation}
+\paragraph{Construct validity.} Coin identification is not general oversight quality. Domain abstraction can make a derivation readable while making its coin origin unidentified under the fixed rubric. The semantic reward uses the same monitor prompt and model family as evaluation, although requests are fresh. This tests response to that monitor incentive, not evasion of an unseen monitor family. The evidence auditor's ability to check a correct derivation requires human validation.
+
+\paragraph{Dependence and sample size.} Three separate optimization histories per arm are a small sample and share tasks, model infrastructure, and fixed prompts. Diagnostic transfers share candidate strategies. Families are hand-selected, not sampled randomly from a population of rewards. The zero-length endpoint can dominate apparent predictive success. Sensitivity analyses removing structurally extreme configurations would be informative but must be labelled additional, not silently substituted for the registered analysis.
+
+\paragraph{Optimization and scale.} Twelve in-context steps may not substantially optimize every reward. A null monitoring effect accompanied by low reward attainment is not evidence of compatibility. Accuracy ceilings, especially for six-step problems, prevent strong conclusions about whether process incentives improve useful computation. Process supervision changes task length as well as reward family. Its family comparison is therefore not a clean reward-only intervention. The \$40 ceiling is a resource constraint, not a sample-size or power justification.
+
+\paragraph{Mechanism and external validity.} Output text does not identify private reasoning or its causal role. The model can potentially answer a short task without expressing a derivation. No activation access, reasoning intervention, model fine-tuning, human-preference collection, or adversarial code task is part of this study. We do not extrapolate to deployed safety monitors, harmful-intent detection, or arbitrary reward pairs. A moving model alias and sequential service calls leave residual time/version confounding despite interleaving.
+
+\paragraph{Draft timing and additional analysis.} The source protocol predates paid execution. This manuscript and its audit checklist were written while the run was ongoing. Any new analyses, human audit choices, or hypotheses introduced here must be time-stamped and distinguished from the frozen primary analysis. No novelty, positive result, or publication acceptance follows from preregistration or reproducibility alone.
+
+\section{Reproducibility and operational record}
+The protocol is version \texttt{reward-compatibility-v0.1}, run \texttt{experiment-002-v01}. Initial registration is preserved at source commit \texttt{336232c}. The API ledger retains request identifiers, visible prompts and completions, token usage, charges, and ambiguous outcomes. Unknown billing retains a conservative reservation rather than triggering blind retries. The application cap is \$40, including a \$4 feasibility allowance; recorded price-based accounting is not a provider-invoice guarantee.
+
+At main cursor 35, the owner requested an operational speedup. After pausing and draining requests, revision \texttt{parallel-ledger-v1} enabled up to three independent sample pipelines within a unit. Candidate generation still precedes transfers; optimization steps and replay updates remain sequential. Task IDs, prompts, ordering of stored samples, and study counts were unchanged. The amendment was recorded publicly. Resume reuses completed-call checkpoints rather than restarting the experiment. Storage protections bound records and public pages and pause before the configured storage threshold; no retention truncation is used to manufacture a complete run.
+
+After completion, \texttt{npm run export} verifies record counts and produces the manifest, scored records, estimates CSV, analysis JSON, and SVG figure without model calls. Full prompts live in \texttt{src/prompts.ts}; exact task and reward code in \texttt{src/protocol.ts}; analysis in \texttt{src/analysis.ts}. The source repository is \url{https://github.com/RaphaelKhalid/reward-compatibility}. The public observer is \url{https://autolabs-ebon.vercel.app/experiments/reward-compatibility}. Before submission, archive the final code/data snapshot and record the immutable archive identifier.
+
+\section{Conclusion}
+We have specified a bounded test of whether a readable-witness diagnostic predicts monitoring loss under API-based in-context optimization. The completed study must determine whether this diagnostic adds predictive value, fails in informative ways, or remains inconclusive. \pending{Write an evidence-based conclusion only after final export and audit. Do not describe the theoretical reward-classification problem as solved.}
+
+\section*{Author responsibility and AI assistance}
+This draft has one provisional human author. AI systems assisted implementation, source inspection, manuscript drafting, and the generation and scoring of experimental outputs. AI tools are not authors. The human author is responsible for verifying the methods, citations, data, analysis, and final claims. Human review of this manuscript and final evidence remains pending. No affiliation with or endorsement by the cited researchers, Google DeepMind, OpenAI, or model providers is implied.
+
+\begin{thebibliography}{9}
+\bibitem{kaufmann2026} Max Kaufmann, David Lindner, Roland S. Zimmermann, and Rohin Shah. 2026.
+\emph{Aligned, Orthogonal or In-conflict: When can we safely optimize Chain-of-Thought?}
+arXiv:2603.30036v1. \url{https://arxiv.org/abs/2603.30036v1}.
+\bibitem{baker2025} Bowen Baker et al. 2025.
+\emph{Monitoring Reasoning Models for Misbehavior and the Risks of Promoting Obfuscation.}
+arXiv:2503.11926. \url{https://arxiv.org/abs/2503.11926}.
+\bibitem{lanham2023} Tamera Lanham et al. 2023.
+\emph{Measuring Faithfulness in Chain-of-Thought Reasoning.}
+arXiv:2307.13702. \url{https://arxiv.org/abs/2307.13702}.
+\end{thebibliography}
+\end{document}
