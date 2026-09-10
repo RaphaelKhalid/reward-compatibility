@@ -54,6 +54,14 @@ export class RewardStudy extends DurableObject<StudyEnv> {
       s.status='running';s.startedAt=NOW();this.save(s);this.event('ribbon_cut',{version:VERSION,capUsd:40,gateCapUsd:4});await this.ctx.storage.setAlarm(Date.now()+1000);return this.status();
     }
     if(action==='resume'&&s.status==='paused'&&s.reason==='owner_pause') {s.status='running';s.reason=null;this.save(s);await this.ctx.storage.setAlarm(Date.now()+1000);return this.status();}
+    // Recovery is deliberately limited to initial authentication, before any study data exist.
+    // Preserve the rejected request and its conservative reservation instead of erasing billing.
+    if(action==='retry-auth'&&s.status==='paused'&&s.reason==='openai_http_401'&&s.stage==='gate'&&s.cursor===0) {
+      const id='gate-actor-0/actor',row=this.ctx.storage.sql.exec<CallRow>('SELECT * FROM calls WHERE id=?',id).toArray()[0];
+      if(!row||row.error!=='openai_http_401')throw new Error('action_not_allowed');
+      this.ctx.storage.sql.exec('UPDATE calls SET id=? WHERE id=?',`${id}/rejected-${Date.now()}`,id);
+      s.status='running';s.reason=null;s.leaseUntil=0;this.save(s);this.event('authentication_reconfigured',{retainedRejectedRequest:true,protocolUnchanged:true});await this.ctx.storage.setAlarm(Date.now()+1000);return this.status();
+    }
     // Scientific, billing and API failures cannot be overridden through a generic resume.
     throw new Error('action_not_allowed');
   }

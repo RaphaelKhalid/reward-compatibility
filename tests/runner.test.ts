@@ -48,6 +48,14 @@ describe('durable runner safety (real SQLite, mocked network)',()=>{
     vi.stubGlobal('fetch',vi.fn(async()=>Response.json({id:'r',model:'gpt-5.6-luna',status:'incomplete',usage:{input_tokens:100,output_tokens:2048},output:[]})));
     const h=harness();await h.study.control('start');await h.study.alarm();const s=await h.study.status();expect(s.reason).toBe('incomplete_model_output');expect(s.budget.spentUsd).toBeGreaterThan(.002);
   });
+  it('initial authentication can be repaired without erasing the rejected attempt or reserve',async()=>{
+    vi.stubGlobal('fetch',vi.fn(async()=>new Response('{}',{status:401})));
+    const h=harness();await h.study.control('start');await h.study.alarm();const before=await h.study.status();
+    expect(before.reason).toBe('openai_http_401');await h.study.control('retry-auth');
+    vi.stubGlobal('fetch',vi.fn(async()=>response()));await h.study.alarm();const after=await h.study.status();
+    expect(after.progress.done).toBe(1);expect(after.budget.calls).toBe(2);expect(after.budget.reservedUsd).toBe(before.budget.reservedUsd);expect(h.study.logs(0).calls.some(c=>c.error==='openai_http_401')).toBe(true);
+    await expect(h.study.control('retry-auth')).rejects.toThrow();
+  });
   it('retains completed-call checkpoints on a worker restart',async()=>{
     const h=harness();await h.study.control('start');await h.study.alarm();const row=h.db.prepare('SELECT prompt FROM calls LIMIT 1').get();expect(row?.prompt).toBeTruthy();
     // Simulate crash after call commit but before the containing unit checkpoint.
