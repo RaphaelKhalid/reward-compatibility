@@ -2,7 +2,9 @@
 
 An exploratory measurement study based on [Kaufmann et al. (2026)](https://arxiv.org/abs/2603.30036). Searches for human-readable high-reward strategies, then tests whether this diagnostic predicts monitoring loss under in-context optimization.
 
-- [Live AutoLabs record](https://autolabs-ebon.vercel.app/experiments/reward-compatibility)
+- [AutoLabs homepage — newest experiment](https://autolabs-ebon.vercel.app)
+- [Stable Experiment 002 record](https://autolabs-ebon.vercel.app/experiments/reward-compatibility)
+- [AutoLabs interface repository](https://github.com/RaphaelKhalid/autolabs)
 - [Protocol, limitations and declared deviations](PROTOCOL.md)
 - [Public status](https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev/status)
 - [Visible output logs](https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev/logs) (`?offset=10` pagination)
