@@ -13,8 +13,11 @@ Completed:
 - Type check and Cloudflare dry-run build passed.
 - Built the read-only AutoLabs live page and experiment navigation, preserving the Erdős archive.
 
+Live verification:
+- Desktop/phone layouts verified, including live status, log pagination and no horizontal overflow; initial authentication recovered.
+- All 68 feasibility units completed and the gate passed. All six criteria passed; 42-step actor correctness was 10/12 (descriptive, not a selection threshold).
+- Main study started automatically under the frozen protocol. Conservative forecast at the gate: $4.81285; entire study hard cap remains $40. Initial main-stage spending was $0.01734.
+
 Pending:
-- Desktop/phone layouts verified, including live status and no horizontal overflow; initial authentication recovered.
-- Actual $4-capped feasibility run; main run only after valid gate and budget forecast. Entire study max $40.
 - Additional cloud monitoring task requested; verify whether its environment supports recurring checks. The deployed Worker watchdog already operates independently of local devices.
 - Final export (`npm run export`) and human evidence audit after the run finishes.
