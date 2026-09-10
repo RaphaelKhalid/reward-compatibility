@@ -13,7 +13,7 @@ if(action==='secrets') {
   });
   // Wrangler reports secret NAMES only. No environment or input is logged.
   process.stdout.write(result.stdout??'');process.stderr.write(result.stderr??'');process.exit(result.status??1);
-} else if(['start','pause','resume'].includes(action)) {
+} else if(['start','pause','resume','retry-auth'].includes(action)) {
   const response=await fetch(`${url}/admin/${action}`,{method:'POST',headers:{authorization:`Bearer ${env.ADMIN_TOKEN}`}});
   if(!response.ok)throw new Error(`Owner command failed: HTTP ${response.status}`);
   console.log(JSON.stringify(await response.json(),null,2));
