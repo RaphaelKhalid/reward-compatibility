@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "autolabs-reward-compatibility",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-10",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true, "head_sampling_rate": 1 },
+  "durable_objects": { "bindings": [{ "name": "STUDY", "class_name": "RewardStudy" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["RewardStudy"] }],
+  "triggers": { "crons": ["*/5 * * * *"] },
+  "vars": { "PUBLIC_ORIGIN": "https://autolabs-ebon.vercel.app" }
+}
