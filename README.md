@@ -38,6 +38,8 @@ Cloudflare alarms own execution; the browser is a read-only observer. The five-m
 
 `src/analysis.ts` builds repeat-level paired effects from exported records. The final figure compares frozen diagnostic estimates with observed additional monitoring loss, alongside correctness and reward attainment. Confidence intervals use independent histories, not thousands of correlated individual completions. All reward families, failures and inconclusive outcomes remain in the record. Human evidence audit is required before strong claims.
 
+After the run is complete, `npm run export` downloads all scored records, checks completeness and regenerates `results.json`, `analysis.json`, `estimates.csv` and a publication-editable `figure.svg` under `data/experiment-002-v01/`. It refuses to make a final figure from sealed or incomplete evaluations. No model calls are made during export.
+
 ## License and attribution
 
 Original implementation: MIT (see LICENSE). Scientific ideas and source experiment attributed to Kaufmann, Lindner, Zimmermann and Shah. Prompts here are independently worded adaptations; consult the paper for original text. No affiliation with, endorsement by, or employment relationship with Google DeepMind or OpenAI is implied.

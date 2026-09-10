@@ -1,6 +1,6 @@
 # Experiment 002 build status
 
-Updated 2026-09-10. Research repository and cloud runner deployed; live page deployed. First request was rejected with HTTP 401 because a legacy local file contained a placeholder credential. No model output was generated. The supplied key passed a non-billable model-access check and has been installed securely. A narrowly scoped initial-authentication retry preserves the failed record and reservation; the scientific protocol is unchanged.
+Updated 2026-09-10. Research repository, cloud runner and live page deployed. The feasibility gate is running with real API output and measured usage. The initial HTTP 401 came from a legacy placeholder credential; the supplied key was validated and installed securely. A narrowly scoped initial-authentication retry preserved the failed record and reservation; the scientific protocol is unchanged.
 
 Completed:
 - Read existing AutoLabs project rules; primary frontend repository is `../autolabs-edit`, initially clean.
@@ -14,6 +14,7 @@ Completed:
 - Built the read-only AutoLabs live page and experiment navigation, preserving the Erdős archive.
 
 Pending:
-- Finish desktop/phone visual verification and initial-authentication recovery.
+- Desktop/phone layouts verified, including live status and no horizontal overflow; initial authentication recovered.
 - Actual $4-capped feasibility run; main run only after valid gate and budget forecast. Entire study max $40.
-- Cloud monitoring task, live verification, eventual analysis/export and human evidence audit.
+- Additional cloud monitoring task requested; verify whether its environment supports recurring checks. The deployed Worker watchdog already operates independently of local devices.
+- Final export (`npm run export`) and human evidence audit after the run finishes.
