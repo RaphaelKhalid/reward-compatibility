@@ -1,4 +1,15 @@
-# Experiment 002 build status
+# Current research status
+
+Updated 2026-09-11 UTC.
+
+- Experiment 002: complete, 716/716 main units, preserved at its original Worker and public archive.
+- Experiment 002.1: launched as experiment-002-1-v1 on 2026-09-11T06:07:53.267Z. Frozen source commit d8b471f; deployed isolation checks passed 10/10. Development passed with 719/720 parseable responses and the fixed held-out evaluation started automatically.
+- 002.1 live: https://autolabs-ebon.vercel.app/experiments/reward-compatibility-21
+- Experiment 002.2: preparing the separately registered reference-relative classification stage. It will wait for 002.1 completion and settled reservations, then check that its entire worst-case fixed plan fits the remaining shared $40 cap.
+- Current source tests: 111 passing at the 002.1 launch; public interface: 99 tests, typecheck and production build passing. New-stage tests are separate.
+- Published sources contain no API-key literals; credentials are stored only as private local configuration and encrypted Worker secrets.
+
+## Historical Experiment 002 build log
 
 Updated 2026-09-10. Research repository, cloud runner and live page deployed. The feasibility gate passed; the main study is running. The initial HTTP 401 came from a legacy placeholder credential; the supplied key was validated and installed securely. A narrowly scoped initial-authentication retry preserved the failed record and reservation; the scientific protocol is unchanged.
 
