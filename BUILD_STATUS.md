@@ -3,9 +3,9 @@
 Updated 2026-09-11 UTC.
 
 - Experiment 002: complete, 716/716 main units, preserved at its original Worker and public archive.
-- Experiment 002.1: launched as experiment-002-1-v1 on 2026-09-11T06:07:53.267Z. Frozen source commit d8b471f; deployed isolation checks passed 10/10. Development passed with 719/720 parseable responses and the fixed held-out evaluation started automatically.
+- Experiment 002.1: completed all 3,600 steps at 2026-09-11T07:11:48.849Z. Frozen scientific sources unchanged. Guided accuracy 55.3125% versus 55% development-majority baseline; 61/320 cases have guided compatibility witnesses. Complete archive verified under data/followups/experiment-002-1-v1: all prompts replayed, all results reconstructed, entire analysis reproduced exactly. One provider-failed attempt and 11 total malformed/abstaining calls are retained.
 - 002.1 live: https://autolabs-ebon.vercel.app/experiments/reward-compatibility-21
-- Experiment 002.2: registered and deployed, waiting automatically for 002.1 completion and closed reservation accounting. Its fixed 4,116-call plan must fit the remaining shared $40 cap before launch. Public interface: https://autolabs-ebon.vercel.app/experiments/reward-categories-22
+- Experiment 002.2: automatically launched at 2026-09-11T07:12:39.894Z after all 10 isolation probes passed and the complete fixed plan fit the shared $40 cap. Development passed 20/20; fixed 4,096-call evaluation is running and sealed. Public interface: https://autolabs-ebon.vercel.app/experiments/reward-categories-22
 - Provider-failure recovery: 002.1 resumed after one explicit 503, preserving the failed attempt as an abstention and its $0.003135 uncertain cost allowance. Separate operational adapters leave both scientific manifests unchanged; see each version's OPERATIONS.md and operations-manifest.json. 002.2 configuration recovered before any paid calls.
 - Current source tests: 111 passing at the 002.1 launch; public interface: 99 tests, typecheck and production build passing. New-stage tests are separate.
 - Published sources contain no API-key literals; credentials are stored only as private local configuration and encrypted Worker secrets.

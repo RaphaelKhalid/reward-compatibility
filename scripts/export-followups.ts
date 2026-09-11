@@ -1,6 +1,6 @@
 /** Completed-run archival only. No credentials, mutations, model calls or sealed reads.
- * Usage: npx vite-node scripts/export-followups.ts 002.1 [new-output-directory]
- *        npx vite-node scripts/export-followups.ts 002.2 [new-output-directory]
+ * Usage: npx vite-node --script scripts/export-followups.ts 002.1 [new-output-directory]
+ *        npx vite-node --script scripts/export-followups.ts 002.2 [new-output-directory]
  */
 import {createHash} from 'node:crypto';
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
@@ -251,8 +251,15 @@ export async function exportFollowup(experiment: Experiment, directory?: string,
   });
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  exportFollowup(process.argv[2] as Experiment, process.argv[3]).then(manifest => {
+/** vite-node leaves its own executable before the script in argv. Match only the
+ * exact script path, so importing from a test or another module does not run it. */
+export function cliArguments(argv: string[], scriptPath = fileURLToPath(import.meta.url)): string[] | null {
+  const index = argv.findIndex((argument, i) => i > 0 && resolve(argument) === resolve(scriptPath));
+  return index < 0 ? null : argv.slice(index + 1);
+}
+const cli = cliArguments(process.argv);
+if (cli) {
+  await exportFollowup(cli[0] as Experiment, cli[1]).then(manifest => {
     console.log(JSON.stringify({archiveComplete: true, runId: manifest.runId, files: manifest.files.length, accounting: manifest.accounting}));
   }).catch(error => {console.error(`Export refused: ${error instanceof Error ? error.message : 'unknown error'}`); process.exitCode = 1;});
 }

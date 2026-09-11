@@ -8,4 +8,4 @@
 - Public status: https://autolabs-reward-categories-22.raphaelbahadurkhan.workers.dev/status
 - Public interface: https://autolabs-ebon.vercel.app/experiments/reward-categories-22
 
-Verified waiting with zero calls after adapter deployment. Actual start time and current progress must be read from public status, not inferred from this document. Launch requires predecessor completion, no live predecessor reservations, sandbox preflight, and sufficient shared budget for the complete fixed plan. Evaluation remains sealed until all planned calls finish.
+Automatically started at 2026-09-11T07:12:39.894Z after predecessor completion. All 10 isolation probes passed; prior conservative commitment was $2.641941. The complete fixed plan passed the shared budget preflight. All 20 development formatting calls were parseable, and evaluation began automatically. Current progress must be read from public status. Evaluation remains sealed until all planned calls finish.

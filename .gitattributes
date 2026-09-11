@@ -1,0 +1,2 @@
+# Preserve the exact bytes hashed in completed experiment archives on every OS.
+data/followups/** -text
