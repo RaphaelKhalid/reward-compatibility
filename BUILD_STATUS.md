@@ -5,7 +5,8 @@ Updated 2026-09-11 UTC.
 - Experiment 002: complete, 716/716 main units, preserved at its original Worker and public archive.
 - Experiment 002.1: launched as experiment-002-1-v1 on 2026-09-11T06:07:53.267Z. Frozen source commit d8b471f; deployed isolation checks passed 10/10. Development passed with 719/720 parseable responses and the fixed held-out evaluation started automatically.
 - 002.1 live: https://autolabs-ebon.vercel.app/experiments/reward-compatibility-21
-- Experiment 002.2: preparing the separately registered reference-relative classification stage. It will wait for 002.1 completion and settled reservations, then check that its entire worst-case fixed plan fits the remaining shared $40 cap.
+- Experiment 002.2: registered and deployed, waiting automatically for 002.1 completion and closed reservation accounting. Its fixed 4,116-call plan must fit the remaining shared $40 cap before launch. Public interface: https://autolabs-ebon.vercel.app/experiments/reward-categories-22
+- Provider-failure recovery: 002.1 resumed after one explicit 503, preserving the failed attempt as an abstention and its $0.003135 uncertain cost allowance. Separate operational adapters leave both scientific manifests unchanged; see each version's OPERATIONS.md and operations-manifest.json. 002.2 configuration recovered before any paid calls.
 - Current source tests: 111 passing at the 002.1 launch; public interface: 99 tests, typecheck and production build passing. New-stage tests are separate.
 - Published sources contain no API-key literals; credentials are stored only as private local configuration and encrypted Worker secrets.
 
