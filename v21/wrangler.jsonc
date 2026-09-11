@@ -1,0 +1,13 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "autolabs-compatibility-21",
+  "main": "index.ts",
+  "compatibility_date": "2026-09-10",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {"enabled": true},
+  "durable_objects": {"bindings": [{"name":"STUDY21","class_name":"CompatibilityStudy"}]},
+  "migrations": [{"tag":"v1","new_sqlite_classes":["CompatibilityStudy"]}],
+  "services": [{"binding":"CHECKER","service":"autolabs-v21-finite-checker"}],
+  "triggers": {"crons":["*/5 * * * *"]},
+  "limits": {"cpu_ms":30000}
+}
