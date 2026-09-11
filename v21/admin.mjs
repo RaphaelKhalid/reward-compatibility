@@ -12,7 +12,7 @@ if(action==='secrets'){
   });
   process.stdout.write(run.stdout??'');process.stderr.write(run.stderr??'');process.exit(run.status??1);
 }
-if(!['start','pause','resume','status','analysis'].includes(action))throw Error('Unsupported action');
+if(!['start','pause','resume','account-failed','status','analysis'].includes(action))throw Error('Unsupported action');
 const isRead=['status','analysis'].includes(action);
 const vars=isRead?{}:parseEnv(readFileSync(new URL('../.dev.vars',import.meta.url),'utf8'));
 const response=await fetch(base+(isRead?'/'+action:'/admin/'+action),isRead?{}:{method:'POST',headers:{authorization:'Bearer '+vars.ADMIN_TOKEN}});
