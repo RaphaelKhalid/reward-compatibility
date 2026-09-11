@@ -51,6 +51,32 @@ describe('002.2 durable successor: real SQLite, isolated checker, mocked paid AP
     h.prior.budget.reservedUsd=0;h.prior.active.push({id:'pending'});
     await expect(h.study.control('start')).rejects.toThrow('predecessor_unsettled');expect(fetch).not.toHaveBeenCalled();
   });
+  it('recovers only an empty pre-run missing-key pause and preserves both protocol hashes',async()=>{
+    const h=harness();h.env.OPENAI_API_KEY='';await h.study.control('arm');await h.study.alarm();
+    expect(h.state().reason).toBe('missing_key');
+    await expect(h.study.control('retry-config')).rejects.toThrow('missing_key');
+    h.env.OPENAI_API_KEY='test-restored';h.setState({protocolHash:'old-pre-run-hash'});
+    await h.study.control('retry-config');
+    expect(h.state().status).toBe('waiting');expect(h.state().protocolHash).toMatch(/^[a-f0-9]{64}$/);
+    const event=JSON.parse(String(h.db.prepare("SELECT data FROM events WHERE type='pre_run_config_recovered'").get()?.data));
+    expect(event.previousProtocolHash).toBe('old-pre-run-hash');expect(event.protocolHash).toBe(h.state().protocolHash);
+    expect(await h.ctx.storage.getAlarm()).toBeGreaterThan(Date.now());expect(fetch).not.toHaveBeenCalled();
+    await h.study.alarm();expect(h.state().status).toBe('running');expect(fetch).not.toHaveBeenCalled();
+  });
+  it('rejects configuration recovery after any study work or commitment exists',async()=>{
+    for(const condition of ['job','call','prior','started','other-pause']){
+      const h=harness();h.setState({status:'paused',reason:'missing_key',protocolHash:'preserve-me'});
+      if(condition==='job')h.sql.exec("INSERT INTO jobs(id,split,step,state,history) VALUES ('existing','dev',0,'pending','[]')");
+      if(condition==='call')h.sql.exec("INSERT INTO calls(id,job_id,split,state,reserved,charged,prompt,started) VALUES ('paid','paid','dev','done',1,1,'fixture',0)");
+      if(condition==='prior')h.setState({priorMicro:1});
+      if(condition==='started')h.setState({startedAt:new Date().toISOString()});
+      if(condition==='other-pause')h.setState({reason:'unknown_api_outcome'});
+      await expect(h.study.control('retry-config')).rejects.toThrow('config_recovery_not_allowed');
+      expect(h.state().protocolHash).toBe('preserve-me');expect(h.state().status).toBe('paused');
+      expect(h.db.prepare("SELECT COUNT(*) n FROM events WHERE type='pre_run_config_recovered'").get()?.n).toBe(0);
+    }
+    expect(fetch).not.toHaveBeenCalled();
+  });
   it('freezes while armed and rejects a source mismatch even before predecessor completion',async()=>{
     const h=harness();h.prior.status='running';await h.study.control('arm');
     expect(h.state().protocolHash).toMatch(/^[a-f0-9]{64}$/);

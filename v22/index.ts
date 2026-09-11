@@ -78,6 +78,21 @@ export class FrontierStudy extends DurableObject<Bindings>{
   }
   async control(action:string){
     const state=this.read();
+    if(action==='retry-config'){
+      if(BUILD_HASH==='UNFROZEN')throw Error('build_not_frozen');
+      if(!this.env.OPENAI_API_KEY)throw Error('missing_key');
+      const protocolHash=await fingerprint();
+      this.ctx.storage.transactionSync(()=>{
+        const current=this.read();
+        const jobs=this.ctx.storage.sql.exec<{n:number}>('SELECT COUNT(*) n FROM jobs').one().n;
+        const calls=this.ctx.storage.sql.exec<{n:number}>('SELECT COUNT(*) n FROM calls').one().n;
+        if(current.status!=='paused'||current.reason!=='missing_key'||current.priorMicro!==null||current.startedAt!==null||jobs!==0||calls!==0||current.leaseUntil>Date.now())throw Error('config_recovery_not_allowed');
+        const previousProtocolHash=current.protocolHash;
+        current.protocolHash=protocolHash;current.status='waiting';current.reason='waiting_for_002_1_completion';this.save(current);
+        this.event('pre_run_config_recovered',{previousProtocolHash,protocolHash,buildHash:BUILD_HASH,reason:'missing_key',jobs:0,calls:0,note:'Configuration-only pre-run amendment; no study data or scientific protocol changed.'});
+      });
+      await this.ctx.storage.setAlarm(Date.now()+1000);return this.status();
+    }
     if(action==='arm'&&state.status==='ready'){
       if(BUILD_HASH==='UNFROZEN')throw Error('build_not_frozen');
       const protocolHash=await fingerprint();if(this.read().status!=='ready')throw Error('action_not_allowed');
