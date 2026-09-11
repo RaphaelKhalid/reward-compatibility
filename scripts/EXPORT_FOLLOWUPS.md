@@ -3,8 +3,8 @@
 Run from the research repository after the relevant public status is `complete`:
 
 ```sh
-npx vite-node scripts/export-followups.ts 002.1
-npx vite-node scripts/export-followups.ts 002.2
+npx vite-node --script scripts/export-followups.ts 002.1
+npx vite-node --script scripts/export-followups.ts 002.2
 ```
 
 Default destinations are `data/followups/experiment-002-1-v1` and
@@ -12,10 +12,12 @@ Default destinations are `data/followups/experiment-002-1-v1` and
 destination directory:
 
 ```sh
-npx vite-node scripts/export-followups.ts 002.1 data/followups/independent-recheck-002-1
+npx vite-node --script scripts/export-followups.ts 002.1 data/followups/independent-recheck-002-1
 ```
 
-No API key, owner secret or cloud credentials are needed. The script issues public
+The `--script` flag is required: this installed vite-node otherwise removes the
+entry-file path from process arguments, so the import-safe command guard will not
+run. No API key, owner secret or cloud credentials are needed. The script issues public
 GETs only, in fixed five-record pages with at most four simultaneous requests.
 It refuses a sealed/incomplete status before requesting logs, results or analysis.
 There are no model calls, automatic retries, deployment changes or scientific

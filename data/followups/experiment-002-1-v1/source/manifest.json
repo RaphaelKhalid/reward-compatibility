@@ -1,0 +1,70 @@
+{
+  "algorithm": "SHA-256",
+  "files": [
+    {
+      "path": "package-lock.json",
+      "sha256": "55151651443e1c373224608db2b8b519f0204d437d91c65176e6f11708fc5a85"
+    },
+    {
+      "path": "src/api.ts",
+      "sha256": "de263e615d4fa6966c953234f466c82a6df92208e34bfe2d7034527d75b05071"
+    },
+    {
+      "path": "src/operations.ts",
+      "sha256": "de8f83f47736af8b7f60a81f45cdfa667d338bac845fc753aea9aa1dee9e4c9b"
+    },
+    {
+      "path": "src/protocol.ts",
+      "sha256": "b6d0c7f61fae8ff3a67a3feeee0130be895d97e4d5cea267105ef27cac53c703"
+    },
+    {
+      "path": "v21/PROTOCOL.md",
+      "sha256": "48a16262a5b7280aa70afa897d8931739a5a556b4ca78ad8abc8bb3ef3140a9f"
+    },
+    {
+      "path": "v21/analysis.ts",
+      "sha256": "83bdba9cb645a7ae1493870f2b32a0db1c4c1bdeda22081ef8f7d0122788a246"
+    },
+    {
+      "path": "v21/domain.ts",
+      "sha256": "8956d07662c1ec7d3d7291f382617713ef4ff0c10786c1642fe3be70d28e21f9"
+    },
+    {
+      "path": "v21/engine.ts",
+      "sha256": "1f79167c9ae60862238008083ee1f124bd2380433667499415997507af4411b6"
+    },
+    {
+      "path": "v21/index.ts",
+      "sha256": "92b4b98b420520fc5fe71215285d709f443a8d88653661db2494482e8bdd85d3"
+    },
+    {
+      "path": "v21/protocol.ts",
+      "sha256": "ed81663f0f5565495c77e05f38839b14d8a65c1e6645c4bda13d6b546f841bfe"
+    },
+    {
+      "path": "v21/sandbox/index.ts",
+      "sha256": "173207730a5bd1fab54022dbe086ce1f33e454073d2aa7b8dfb0e5990aed799f"
+    },
+    {
+      "path": "v21/sandbox/self-test.ts",
+      "sha256": "c86027d75afd44dcd27145ba2d2f7fca04d2901839649e6aec6b1932779bca0c"
+    },
+    {
+      "path": "v21/sandbox/wrangler.jsonc",
+      "sha256": "0792b54c6fffe18f4935a4ae1d3c8a34a28a56662ff00ed9784b17f3f5bb953b"
+    },
+    {
+      "path": "v21/wrangler.jsonc",
+      "sha256": "7db2c4bc28776d2d68d89c4dd392dfafc39fb12297eb1084518201fd0dc9695d"
+    }
+  ],
+  "sourceHash": "b32515565527340b2590521d512800f26c9d18039ddff978e5c02a34cf805c80",
+  "checkerDeployment": {
+    "version": "66a7b900-1a54-4716-85eb-fb7185c86814",
+    "bindings": [],
+    "workersDev": false,
+    "previews": false,
+    "verified": true
+  },
+  "normalization": "UTF-8 with LF line endings"
+}

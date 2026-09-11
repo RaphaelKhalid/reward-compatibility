@@ -2,15 +2,19 @@
 
 ## Experiment 002.2: reference-relative reward categories
 
-Registered and deployed; starts automatically after 002.1 completes and its budget accounting is closed. [Live dashboard](https://autolabs-ebon.vercel.app/experiments/reward-categories-22) · [protocol](v22/PROTOCOL.md) · [claim-scope review](v22/REVIEW.md) · [public status](https://autolabs-reward-categories-22.raphaelbahadurkhan.workers.dev/status).
+Started automatically on 2026-09-11 at 07:12:39 UTC after 002.1 completed. All 20 development formatting checks passed; the fixed evaluation is running. [Live dashboard](https://autolabs-ebon.vercel.app/experiments/reward-categories-22) · [protocol](v22/PROTOCOL.md) · [claim-scope review](v22/REVIEW.md) · [public status](https://autolabs-reward-categories-22.raphaelbahadurkhan.workers.dev/status).
 
 Eight reward templates, 64 matched independent history pairs per template, four calls per arm: 4,096 main calls plus 20 formatting checks. Outcome-only and combined-reward searches have equal budgets. An exact interpreter scores fixed policies over complete small task populations; all tied optima are retained. This measures a bounded version of the paper's reference-relative question, not hidden reasoning or arbitrary natural-language CoT.
 
 Observed semantic-preservation witnesses and population support are separate. The frozen 64-pair distribution-free bounds can support sufficiently strong directions, but **cannot establish population equivalence within ±5 percentage points**. Unresolved results will be reported as unresolved, not relabeled orthogonal. The $40 ceiling includes all earlier project spending and uncertain charge allowances.
 
-## Current study: Experiment 002.1
+## Completed Experiment 002.1
 
 Finite-domain compatibility classification with independently checkable coin traces and restricted affine-trigger programs. Separate run and ledger; completed 002 is preserved.
+
+Completed all 3,600 planned steps on 2026-09-11 at 07:11:48 UTC. Guided classification accuracy was 55.3125%, versus 55% for the development-majority baseline, with checked compatibility witnesses for 61/320 held-out cases. These descriptive results do not establish a strong general classifier. Reported usage was $1.34718 plus a $0.003135 uncertain charge allowance; see the complete analysis and operational record.
+
+[Verified complete archive](data/followups/experiment-002-1-v1/EXPORT_COMPLETE.json): every prompt/result replayed and the complete analysis reproduced. [Reproduction commands](scripts/EXPORT_FOLLOWUPS.md). Exact archive bytes are preserved across Git checkouts.
 
 - [Live 002.1](https://autolabs-ebon.vercel.app/experiments/reward-compatibility-21)
 - [002.1 registered protocol](v21/PROTOCOL.md)

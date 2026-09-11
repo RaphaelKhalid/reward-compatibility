@@ -2,7 +2,7 @@ import {describe, expect, it} from 'vitest';
 import {mkdtemp, readFile, stat} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
-import {configuration, exportFollowup, fetchPages, reconcileCalls, replayResults, recomputeAnalysis, validateStatus, writeExclusiveArchive, sha256} from '../scripts/export-followups';
+import {configuration, exportFollowup, fetchPages, reconcileCalls, replayResults, recomputeAnalysis, validateStatus, writeExclusiveArchive, sha256, cliArguments} from '../scripts/export-followups';
 import * as P22 from '../v22/protocol';
 import * as E22 from '../v22/engine';
 import {measuredMicro} from '../src/protocol';
@@ -34,6 +34,13 @@ function fixture() {
 }
 
 describe('fixed follow-up archive contracts', () => {
+  it('recognizes direct and vite-node CLI script positions without running on imports', () => {
+    const script = join(tmpdir(), 'export-followups.ts');
+    expect(cliArguments(['node', script, '002.1'], script)).toEqual(['002.1']);
+    expect(cliArguments(['node', 'vite-node.mjs', script, '002.2', 'new-dir'], script)).toEqual(['002.2', 'new-dir']);
+    expect(cliArguments(['node', 'vitest.mjs', 'tests/export-followups.test.ts'], script)).toBeNull();
+    expect(cliArguments(['node', 'other/export-followups.ts', '002.1'], script)).toBeNull();
+  });
   it('derives exact run hashes, calls and jobs from frozen plans', () => {
     const first = configuration('002.1');
     expect(first.protocolHash).toBe('9375e6a48c97aecb080ae4b1631e1a0e6cad620ce9840454d5907d665d757ea8');
