@@ -1,4 +1,17 @@
-# Reward compatibility — AutoLabs Experiment 002
+# Reward compatibility — AutoLabs research
+
+## Current study: Experiment 002.1
+
+Finite-domain compatibility classification with independently checkable coin traces and restricted affine-trigger programs. Separate run and ledger; completed 002 is preserved.
+
+- [Live 002.1](https://autolabs-ebon.vercel.app/experiments/reward-compatibility-21)
+- [002.1 registered protocol](v21/PROTOCOL.md)
+- [002.1 public status](https://autolabs-compatibility-21.raphaelbahadurkhan.workers.dev/status)
+- [002.1 final analysis](https://autolabs-compatibility-21.raphaelbahadurkhan.workers.dev/analysis)
+
+80 development cases, 320 fixed held-out cases, three API methods plus a free development-majority baseline. Shared $40 project cap includes the prior 002 spend and outstanding reservation. Compatibility is not alignment; a separately registered reference-relative stage will address the three categories.
+
+## Completed Experiment 002
 
 An exploratory measurement study based on [Kaufmann et al. (2026)](https://arxiv.org/abs/2603.30036). Searches for human-readable high-reward strategies, then tests whether this diagnostic predicts monitoring loss under in-context optimization.
 
