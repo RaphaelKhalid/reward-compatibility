@@ -1,0 +1,25 @@
+{
+  "amendment": "002.2-http5xx-abstention-accounting-v1",
+  "originalScientificSourceHash": "26142046a58627c7595a5ac6dd6001df06dfc3f5d7ffb891a7f6e519b3534148",
+  "originalProtocolHash": "b58686ca6089f373aae35bca8cf9b48477db9d08b8d714f21aa561874adff363",
+  "normalization": "UTF-8 LF",
+  "files": [
+    {
+      "path": "v22/recovery.ts",
+      "sha256": "ac2f9f9465499aaad2931d5f8ec0e0f51816cd275baad52d4c8fa4f3cb78cc6e"
+    },
+    {
+      "path": "v22/recovery.test.ts",
+      "sha256": "c6346043daa7d511cabba419120a6461f36732793f3f95792e142c144decfab1"
+    },
+    {
+      "path": "v22/wrangler.recovery.jsonc",
+      "sha256": "2596dc0330a5400f69156e121055dcc99c16ab1a18520720d28920ed9f6690e8"
+    },
+    {
+      "path": "v22/OPERATIONS.md",
+      "sha256": "035a637962a4676553721ebfcdc074310f89823cb0c47cad23991ac669928fb2"
+    }
+  ],
+  "operationalSourceHash": "f1d555a8ec2cb8a00c26c75cf3de1d6dd391f6d8117014bb3085ffd8de7fc85c"
+}

@@ -1,0 +1,13 @@
+{
+  "$schema":"../node_modules/wrangler/config-schema.json",
+  "name":"autolabs-reward-categories-22",
+  "main":"recovery.ts",
+  "compatibility_date":"2026-09-10",
+  "compatibility_flags":["nodejs_compat"],
+  "observability":{"enabled":true},
+  "durable_objects":{"bindings":[{"name":"STUDY22","class_name":"FrontierStudy"}]},
+  "migrations":[{"tag":"v1","new_sqlite_classes":["FrontierStudy"]}],
+  "services":[{"binding":"CHECKER","service":"autolabs-v21-finite-checker"},{"binding":"PREVIOUS","service":"autolabs-compatibility-21"}],
+  "triggers":{"crons":["*/5 * * * *"]},
+  "limits":{"cpu_ms":30000}
+}
