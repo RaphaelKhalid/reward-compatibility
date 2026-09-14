@@ -1,0 +1,63 @@
+{
+  "algorithm": "SHA-256",
+  "normalization": "UTF-8 with LF line endings",
+  "files": [
+    {
+      "path": "package-lock.json",
+      "sha256": "55151651443e1c373224608db2b8b519f0204d437d91c65176e6f11708fc5a85"
+    },
+    {
+      "path": "src/api.ts",
+      "sha256": "de263e615d4fa6966c953234f466c82a6df92208e34bfe2d7034527d75b05071"
+    },
+    {
+      "path": "src/operations.ts",
+      "sha256": "de8f83f47736af8b7f60a81f45cdfa667d338bac845fc753aea9aa1dee9e4c9b"
+    },
+    {
+      "path": "src/protocol.ts",
+      "sha256": "b6d0c7f61fae8ff3a67a3feeee0130be895d97e4d5cea267105ef27cac53c703"
+    },
+    {
+      "path": "v21/sandbox/index.ts",
+      "sha256": "173207730a5bd1fab54022dbe086ce1f33e454073d2aa7b8dfb0e5990aed799f"
+    },
+    {
+      "path": "v21/sandbox/self-test.ts",
+      "sha256": "c86027d75afd44dcd27145ba2d2f7fca04d2901839649e6aec6b1932779bca0c"
+    },
+    {
+      "path": "v21/sandbox/wrangler.jsonc",
+      "sha256": "0792b54c6fffe18f4935a4ae1d3c8a34a28a56662ff00ed9784b17f3f5bb953b"
+    },
+    {
+      "path": "v22/PROTOCOL.md",
+      "sha256": "002b5cf9078aeff4b32dfe876cef0bc39c440b90d7802405234cf6d568bec1ec"
+    },
+    {
+      "path": "v22/analysis.ts",
+      "sha256": "c3823a7639c23d7c8b35a24399d8d74b0742258c87e8b92b059a8a7947e2b0a6"
+    },
+    {
+      "path": "v22/engine.ts",
+      "sha256": "eec7fd4b12bccf2006c694589ba7198975a7fdbdb5051c617cd5e7a1d7f23a0e"
+    },
+    {
+      "path": "v22/frontier.ts",
+      "sha256": "40b15b76faf8b61d067b635755b4267a95a8eb0a34a94125f1aa476a15d2d49d"
+    },
+    {
+      "path": "v22/index.ts",
+      "sha256": "dac84aabca1f177a316d607f511cf34a4c3c38f415dca510c7fec1ef4b0b3edc"
+    },
+    {
+      "path": "v22/protocol.ts",
+      "sha256": "04da13e51e5e3fded727dd8cb0ee6c1d11412e90f8f5a6a6f9948a91a73c879f"
+    },
+    {
+      "path": "v22/wrangler.jsonc",
+      "sha256": "05596afe2d919cb2f5f654c81987e4a69077c1a9f372daa11944fc43ff30f204"
+    }
+  ],
+  "sourceHash": "26142046a58627c7595a5ac6dd6001df06dfc3f5d7ffb891a7f6e519b3534148"
+}
