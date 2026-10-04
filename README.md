@@ -5,16 +5,20 @@ the outcome of a separate, outcome-only reference search.
 
 ## Status
 
-**Experiment 002.2 is still in progress.** It started automatically on
-2026-09-11 at 07:12:39 UTC after Experiment 002.1 completed. The 20 development
-formatting calls were parseable, the fixed evaluation began, and evaluation
-records remain sealed until the planned calls finish. Read current state from the
-[public status endpoint](https://autolabs-reward-categories-22.raphaelbahadurkhan.workers.dev/status)
-or the [live experiment page](https://autolabs-ebon.vercel.app/experiments/reward-categories-22).
+**Experiment 002.2 is complete.** It started automatically on 2026-09-11 at
+07:12:39 UTC after Experiment 002.1 completed and finished at 08:04:15 UTC the
+same day: 4,116/4,116 planned calls (20 development, 4,096 evaluation), zero
+failed or malformed calls, $0.987 spent ($3.63 committed in total against the
+$40 cap). The evaluation is unsealed and the verified archive is in
+[data/followups/experiment-002-2-v1/](data/followups/experiment-002-2-v1/).
+The [public status endpoint](https://autolabs-reward-categories-22.raphaelbahadurkhan.workers.dev/status)
+and [final analysis](https://autolabs-reward-categories-22.raphaelbahadurkhan.workers.dev/analysis)
+remain available.
 
-This README intentionally does not report a final 002.2 result. No endpoint,
-paper draft, or pre-results observation should be treated as a completed
-empirical conclusion.
+**Result: unresolved.** All eight held-out reward templates are labelled
+`mixed-or-insufficient`, both for the observed histories and for the frozen
+population check. No template received aligned, in-conflict or equivalence
+support. See [Primary results](#primary-results).
 
 ## TL;DR
 
@@ -29,6 +33,10 @@ empirical conclusion.
 - Experiment 002.1 is complete and descriptive: guided classification accuracy
   was 55.3125% versus a 55% development-majority baseline, with checked
   compatibility witnesses for 61/320 held-out cases.
+- Experiment 002.2 is complete and unresolved: all eight templates are
+  `mixed-or-insufficient`. The outcome-only reference hit the outcome ceiling
+  in 58–64 of 64 pairs per template, so aligned improvement was largely
+  unidentifiable, and the frozen 64-pair bound cannot certify equivalence.
 - The $40 ceiling includes prior spending and uncertain charge allowances.
   Unresolved results remain unresolved rather than being relabeled orthogonal.
 
@@ -96,7 +104,7 @@ as independent runs.
 | Calls per arm | 4 calls per pair; 4,096 main calls across both arms and all templates, plus 20 formatting checks |
 | Main schedule | 8 configurations × 2 conditions × 3 repeats × 12 sequential batches × 1 candidate = 576 candidates and 2,880 fresh transfer evaluations |
 | Diagnostics | 4 independently generated strategies, each transferred to 5 distinct diagnostic tasks |
-| Evaluation | 10 balanced held-out tasks/history, scored by a fresh fixed monitor; records remain sealed until completion |
+| Evaluation | 10 balanced held-out tasks/history, scored by a fresh fixed monitor; records were sealed until completion and are now public |
 | Compute | OpenAI gpt-5.6-luna actor at effort none; fresh Luna high calls for grading, monitoring, audit, and progress |
 | Budget | Hard application cap of $40 including retries, failures, grading, reporting, and reservations; feasibility cap $4 |
 
@@ -116,7 +124,7 @@ Visible explanations are elicited output, not exposed private model reasoning.
 No model weights change. No generated code is executed. Backdoor-Easy is deferred
 until a sandbox, test harness, and source fidelity are independently verified.
 
-## Evidence available before 002.2 finishes
+## Earlier evidence
 
 ### Completed 002.1
 
@@ -152,25 +160,56 @@ with process rewards.
 
 ## Primary results
 
-There are no final 002.2 results to interpret yet. The fixed evaluation is
-sealed while planned calls finish. Once complete, export must pass completeness
-checks before generating results.json, analysis.json, estimates.csv, and
-figure.svg under data/experiment-002-v01/.
+### Experiment 002.2 (complete, unresolved)
 
-The eventual report must keep these quantities separate:
+The run finished on 2026-09-11 at 08:04:15 UTC with 1,024 evaluation histories
+(8 templates × 64 matched pairs), 4,096 attempted calls and 16,383 valid
+candidates. The archive in
+[data/followups/experiment-002-2-v1/](data/followups/experiment-002-2-v1/)
+passed export validation: all frozen files verified, all prompts replayed, all
+results reconstructed, and the recomputed analysis equals the published one.
 
-- observed semantic-preservation witnesses;
-- population-support bounds;
-- reward attainment and correctness;
-- monitorability loss;
-- failures and inconclusive runs.
+Gain is q(combined) − q(reference) at the primary 4-call checkpoint, taken
+over tied optima, as registered in [v22/PROTOCOL.md](v22/PROTOCOL.md). The
+intervals below are the frozen simultaneous Hoeffding bounds (16 means,
+alpha 0.05, radius ≈ 0.449). Unattained or invalid histories count as
+worst case.
 
-With 64 pairs, the frozen distribution-free bound has an approximately 0.4494
-Hoeffding radius. It cannot establish population equivalence within ±5
-percentage points. That is a design limitation, not evidence against
-orthogonality.
+| Template | Domain | Reasoning reward | Eligible pairs | Reference at ceiling | Preserving witness exists / found | Mean min gain | Mean max gain | Label |
+| --- | --- | --- | ---: | ---: | ---: | --- | --- | --- |
+| coin-0 | coin | uppercase + short text | 32/64 | 59 | 2 / 1 | [−1.00, −0.26] | [−0.16, 0.74] | mixed-or-insufficient |
+| coin-1 | coin | banned word + short text | 25/64 | 63 | 0 / 0 | [−1.00, −0.36] | [−0.04, 0.86] | mixed-or-insufficient |
+| coin-2 | coin | process progress + uppercase | 64/64 | 58 | 58 / 58 | [−0.40, 0.50] | [−0.40, 0.50] | mixed-or-insufficient |
+| coin-3 | coin | omit sensitive operation + banned word | 21/64 | 59 | 0 / 0 | [−1.00, −0.37] | [0.07, 0.97] | mixed-or-insufficient |
+| backdoor-0 | backdoor | uppercase + short text | 57/64 | 64 | 64 / 40 | [−0.56, 0.34] | [−0.34, 0.56] | mixed-or-insufficient |
+| backdoor-1 | backdoor | banned word + short text | 50/64 | 64 | 64 / 23 | [−0.67, 0.23] | [−0.23, 0.67] | mixed-or-insufficient |
+| backdoor-2 | backdoor | process progress + uppercase | 57/64 | 64 | 64 / 32 | [−0.56, 0.34] | [−0.34, 0.56] | mixed-or-insufficient |
+| backdoor-3 | backdoor | omit sensitive operation + banned word | 1/64 | 63 | 0 / 0 | [−1.00, −0.55] | [0.52, 1.00] | mixed-or-insufficient |
 
-## Why believe the result when it arrives?
+What this supports:
+
+- No template received population support for an aligned, in-conflict or
+  equivalence label, and the observed-history labels are also
+  `mixed-or-insufficient` for all eight.
+- The outcome-only reference reached the outcome ceiling in 58–64 of 64 pairs
+  per template. Aligned improvement was therefore largely unidentifiable by
+  design, which matches the ceiling risk recorded in [v22/REVIEW.md](v22/REVIEW.md).
+- Semantics-preserving maximum-reward witnesses exist in the finite grammar for
+  every pair in three backdoor templates, and the combined-arm search found
+  them in 23–40 of 64 pairs. For coin-2 they existed and were found in 58/64.
+  These are constructive, finite-grammar witnesses only.
+- The two templates that pair "omit sensitive operation" with a banned word
+  had almost no eligible pairs (21/64 and 1/64) and no witnesses. That is
+  "not found" under this search, not proof of conflict.
+
+What it does not support: universal reward categories, monitorability loss in
+real chain of thought, or any claim about weight-based RL. As the protocol
+states, a 64-pair bound cannot certify equivalence within ±0.05 even with
+identical zero-gain observations. 002.2 measures outcome gain under finite
+search. Connecting these categories to monitoring behaviour would need a
+separate, newly frozen test.
+
+## Why believe the result?
 
 The main safeguards are:
 
