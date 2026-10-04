@@ -1,0 +1,166 @@
+{
+  "exportedAt": "2026-10-04T19:18:42.699Z",
+  "origin": "https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev",
+  "status": {
+    "runId": "experiment-002-v01",
+    "version": "reward-compatibility-v0.1",
+    "title": "Measuring reward compatibility",
+    "model": "gpt-5.6-luna",
+    "status": "complete",
+    "stage": "main",
+    "cursor": 716,
+    "startedAt": "2026-09-10T22:03:11.812Z",
+    "updatedAt": "2026-09-11T00:31:10.768Z",
+    "reason": null,
+    "leaseUntil": 0,
+    "gate": {
+      "pass": true,
+      "checks": {
+        "complete": true,
+        "actorSixCorrect": true,
+        "monitorSensitivity": true,
+        "monitorSpecificity": true,
+        "evidenceCalibration": true,
+        "transferTrials": true
+      },
+      "actor42Correct": 10,
+      "note": "Calibration is a sanity check, not proof of general monitor or evidence-auditor validity."
+    },
+    "forecastUsd": 4.812849568627451,
+    "execution": {
+      "revision": "parallel-ledger-v1",
+      "concurrency": 3
+    },
+    "ledger": {
+      "storageBytes": 23056384,
+      "softLimitBytes": 536870912
+    },
+    "progress": {
+      "done": 716,
+      "total": 716,
+      "current": null
+    },
+    "budget": {
+      "spentUsd": 1.288641,
+      "reservedUsd": 0.002985,
+      "capUsd": 40,
+      "stageCapUsd": 40,
+      "calls": 7364
+    },
+    "active": [],
+    "recent": [
+      {
+        "id": 1579,
+        "time": "2026-09-11T00:31:10.768Z",
+        "type": "complete",
+        "data": {
+          "version": "reward-compatibility-v0.1",
+          "note": "Evaluation unsealed. Human audit required before strong research claims."
+        }
+      },
+      {
+        "id": 1578,
+        "time": "2026-09-11T00:31:09.268Z",
+        "type": "unit_complete",
+        "data": {
+          "id": "evaluation-process-combined-2",
+          "phase": "evaluation"
+        }
+      },
+      {
+        "id": 1577,
+        "time": "2026-09-11T00:30:36.422Z",
+        "type": "unit_started",
+        "data": {
+          "id": "evaluation-process-combined-2",
+          "phase": "evaluation"
+        }
+      },
+      {
+        "id": 1576,
+        "time": "2026-09-11T00:30:34.922Z",
+        "type": "unit_complete",
+        "data": {
+          "id": "evaluation-process-outcome-2",
+          "phase": "evaluation"
+        }
+      },
+      {
+        "id": 1575,
+        "time": "2026-09-11T00:30:03.851Z",
+        "type": "unit_started",
+        "data": {
+          "id": "evaluation-process-outcome-2",
+          "phase": "evaluation"
+        }
+      },
+      {
+        "id": 1574,
+        "time": "2026-09-11T00:30:02.351Z",
+        "type": "unit_complete",
+        "data": {
+          "id": "evaluation-process-combined-1",
+          "phase": "evaluation"
+        }
+      },
+      {
+        "id": 1573,
+        "time": "2026-09-11T00:29:35.299Z",
+        "type": "unit_started",
+        "data": {
+          "id": "evaluation-process-combined-1",
+          "phase": "evaluation"
+        }
+      },
+      {
+        "id": 1572,
+        "time": "2026-09-11T00:29:33.796Z",
+        "type": "unit_complete",
+        "data": {
+          "id": "evaluation-process-outcome-1",
+          "phase": "evaluation"
+        }
+      },
+      {
+        "id": 1571,
+        "time": "2026-09-11T00:28:59.768Z",
+        "type": "unit_started",
+        "data": {
+          "id": "evaluation-process-outcome-1",
+          "phase": "evaluation"
+        }
+      },
+      {
+        "id": 1570,
+        "time": "2026-09-11T00:28:58.268Z",
+        "type": "unit_complete",
+        "data": {
+          "id": "evaluation-process-combined-0",
+          "phase": "evaluation"
+        }
+      },
+      {
+        "id": 1569,
+        "time": "2026-09-11T00:28:34.396Z",
+        "type": "unit_started",
+        "data": {
+          "id": "evaluation-process-combined-0",
+          "phase": "evaluation"
+        }
+      },
+      {
+        "id": 1568,
+        "time": "2026-09-11T00:28:32.896Z",
+        "type": "unit_complete",
+        "data": {
+          "id": "evaluation-process-outcome-0",
+          "phase": "evaluation"
+        }
+      }
+    ],
+    "nextWakeAt": null,
+    "evaluationSealed": false
+  },
+  "registration": "https://github.com/RaphaelKhalid/reward-compatibility/tree/336232c",
+  "note": "Human audit pending; exploratory measurement, not a safety certificate."
+}
