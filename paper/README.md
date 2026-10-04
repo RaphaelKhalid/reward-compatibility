@@ -4,7 +4,7 @@
 
 ## Build
 
-From `paper/`, use `pdflatex main.tex` twice, or `tectonic main.tex`. The bibliography is embedded so BibTeX is not required. A compiled preview is kept in `../output/pdf/main.pdf`; the preview and source must be updated together after edits. The preview currently predates the October 4 results update and needs rebuilding. Standard TeX packages are used; no shell escape is required.
+From `paper/`, use `pdflatex main.tex` twice, or `tectonic main.tex`. The bibliography is embedded so BibTeX is not required. A compiled preview is kept in `../output/pdf/main.pdf`; the preview and source must be updated together after edits. It was rebuilt with Tectonic 0.17.0 on October 4, 2026; `figures/main-results.pdf` is the exported `figure.svg` printed to vector PDF. Standard TeX packages are used; no shell escape is required.
 
 ## Complete after the study
 
