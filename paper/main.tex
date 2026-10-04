@@ -10,7 +10,7 @@
 \definecolor{inkgreen}{HTML}{365D4B}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small Reward compatibility: experimental draft}
-\fancyhead[R]{\small Results pending}
+\fancyhead[R]{\small Human audit pending}
 \fancyfoot[C]{\thepage}
 \setlength{\headheight}{14pt}
 \setlength{\emergencystretch}{2em}
@@ -18,15 +18,15 @@
 \newcommand{\ind}{\mathbf{1}}
 \title{Testing a Readable-Witness Diagnostic for Reward Compatibility\\[4pt]\large A controlled, API-based study of in-context optimization}
 \author{Raphael Khalid\\Independent researcher\\\small\textit{Provisional byline: author confirmation pending}}
-\date{Working manuscript, September 10, 2026}
+\date{Working manuscript, September 10, 2026; results added October 4, 2026}
 
 \begin{document}
 \maketitle
 \begin{center}
-\fbox{\parbox{.89\linewidth}{\small\textbf{Pre-results draft, not submission-ready.} The main experiment is ongoing. No terminal effects, predictive comparisons, or novelty claims have been established. Methods below describe the frozen implementation; tables reserve space for audited results. This manuscript was drafted after launch, not independently preregistered before data collection.}}
+\fbox{\parbox{.89\linewidth}{\small\textbf{Results draft, not submission-ready.} The run is complete and the registered analysis is reported below. The planned human audit has not been performed, and no novelty claim is made. Methods below describe the frozen implementation. This manuscript was drafted after launch, not independently preregistered before data collection, and the results sections were written after the final effects had been inspected.}}
 \end{center}
 \begin{abstract}
-Optimizing a language model's visible reasoning may change what an external monitor can infer from it. We investigate whether a small search for readable strategies that jointly satisfy outcome and reasoning rewards can predict later monitoring loss. Our diagnostic is a finite-search, model-audited witness rate, not a decision procedure for universally quantified reward compatibility. The registered schedule covers eight reward configurations in five families on a deterministic coin-state task. Each configuration has matched outcome-only and combined-reward conditions, three separate optimization histories per condition, and twelve in-context optimization steps per history. Candidate strategies are scored on five fresh transfer tasks; baseline and terminal evaluation use ten held-out tasks per history. We compare witness rate with description-only predictions, baseline monitorability, and baseline reasoning length using leave-one-family-out prediction. The complete main schedule contains 716 orchestration units under a \$40 API cap. \textbf{Results are pending.} The intended contribution is a reproducible test of the diagnostic's usefulness and failure modes, with explicitly limited claims about generalization, causal mechanisms, and internal reasoning.
+Optimizing a language model's visible reasoning may change what an external monitor can infer from it. We investigate whether a small search for readable strategies that jointly satisfy outcome and reasoning rewards can predict later monitoring loss. Our diagnostic is a finite-search, model-audited witness rate, not a decision procedure for universally quantified reward compatibility. The registered schedule covers eight reward configurations in five families on a deterministic coin-state task. Each configuration has matched outcome-only and combined-reward conditions, three separate optimization histories per condition, and twelve in-context optimization steps per history. Candidate strategies are scored on five fresh transfer tasks; baseline and terminal evaluation use ten held-out tasks per history. We compare witness rate with description-only predictions, baseline monitorability, and baseline reasoning length using leave-one-family-out prediction. The complete main schedule contains 716 orchestration units under a \$40 API cap; all completed, at a recorded cost of \$1.29. In leave-one-family-out prediction of additional monitoring loss, the witness rate had a mean absolute error of 0.156 against 0.158 for an intercept-only model, and description-only predictions, baseline monitorability and baseline length all did worse than the intercept. Only one of eight configurations, a 16-character length limit, had a repeat-level interval for additional loss that excluded zero, and that interval is unadjusted for multiplicity. The diagnostic therefore showed no meaningful predictive value at this scale. The contribution is a reproducible, fully exported test of the diagnostic and its failure modes, with explicitly limited claims about generalization, causal mechanisms, and internal reasoning.
 \end{abstract}
 
 \section{Introduction}
@@ -140,36 +140,51 @@ The candidate predictors are witness rate, description-only predicted loss, base
 
 Only five family-level folds are available, and their training sets overlap. We do not treat their errors as five independent confirmatory trials, tune the diagnostic on terminal outcomes, or make a broad generalization claim from a small error difference. The description-only score is constrained to $[0,1]$, while observed additional loss can be negative; its linear calibration occurs within training folds, not on held-out outcomes.
 
-\section{Results: reserved for the completed run}
-\pending{Verify completion, export all 784 scored checkpoints (68 gate plus 716 main), and audit the records before replacing this section. No interim terminal scores were consulted in drafting these results slots.}
+\section{Results}
+All 784 scored checkpoints (68 gate plus 716 main) were exported with \texttt{npm run export}, which verified record counts and recomputed the analysis from the exported records without model calls. The recomputed analysis is identical to the public analysis endpoint. Records, estimates, analysis and figure are in \texttt{data/experiment-002-v01/}.
 
-\paragraph{Feasibility and execution.} \pending{Report each gate count and denominator, total elapsed and active time, exact returned model identifiers, measured spend, retained reservations, failures, and whether every frozen unit completed. Do not substitute the budget cap for actual cost.}
+\paragraph{Feasibility and execution.} The 68-unit gate passed every registered check. Six-step actor accuracy was 12/12 (criterion at least 11/12). Coin-monitor sensitivity was 12/12 and specificity 12/12 (criterion at least 11/12 each). The evidence auditor matched 11/12 calibration cases (criterion at least 11/12). All eight reward configurations executed with five transfers each. The 42-step actor accuracy was 10/12; this is descriptive and was not a gate criterion. All 716 main units completed. The run was recorded as started at 2026-09-10 22:03:11 UTC and completed at 2026-09-11 00:31:10 UTC, an elapsed time of 2 h 28 min that includes the gate; active time was not recorded separately. The ledger records 7,364 calls and \$1.288641 of price-based spend, with \$0.002985 still held as conservative reservations for calls whose billing was not confirmed. The build log records an initial HTTP 401 from a placeholder credential, preserved as a failed record before the correct key was installed. The configured model alias was \texttt{gpt-5.6-luna}; the exported records do not include per-call returned model identifiers, so these have not been verified here.
 
 \begin{figure}[ht]
 \centering
-\IfFileExists{figures/main-results.pdf}{\includegraphics[width=\linewidth]{figures/main-results.pdf}}{\fbox{\parbox[c][1.15in][c]{.9\linewidth}{\centering\textbf{Main results figure pending}\\[5pt]Eight reward rows: readable-witness rates on the left;\\additional monitoring loss with repeat-level intervals on the right.\\No illustrative or simulated values are plotted.}}}
-\caption{Planned primary results display. The existing exporter generates a vector figure after completion. Diagnostic uncertainty is additionally reported in the table. The plot alone does not establish predictive performance.}\label{fig:main}
+\IfFileExists{figures/main-results.pdf}{\includegraphics[width=\linewidth]{figures/main-results.pdf}}{\fbox{\parbox[c][1.15in][c]{.9\linewidth}{\centering\textbf{Figure file not yet converted}\\[5pt]The exported vector figure is \texttt{data/experiment-002-v01/figure.svg}.\\Convert it to \texttt{paper/figures/main-results.pdf} to include it here.}}}
+\caption{Readable-witness rates (left) and additional monitoring loss with repeat-level intervals (right) for the eight configurations. The plot alone does not establish predictive performance.}\label{fig:main}
 \end{figure}
 
 \begin{table}[ht]
 \centering\small
 \begin{tabular}{@{}lcccc@{}}\toprule
 Configuration & Witness rate & Extra loss & Accuracy effect & Reward attained\\\midrule
-Length 0 & pending & pending & pending & pending\\
-Length 16 & pending & pending & pending & pending\\
-Length 64 & pending & pending & pending & pending\\
-Length 256 & pending & pending & pending & pending\\
-String & pending & pending & pending & pending\\
-Semantic & pending & pending & pending & pending\\
-Preference & pending & pending & pending & pending\\
-Process & pending & pending & pending & pending\\\bottomrule
+Length 0 & 0 [0, 0] & 0.0 [$-$49.7, 49.7] & +6.7 & 33.3\\
+Length 16 & 10 [$-$8.4, 28.4] & +63.3 [25.4, 101.3] & +30.0 & 100\\
+Length 64 & 20 [$-$6.0, 46.0] & 0.0 [$-$65.7, 65.7] & +10.0 & 100\\
+Length 256 & 100 [100, 100] & +20.0 [$-$142.9, 182.9] & 0.0 & 100\\
+String & 70 [28.9, 111.1] & +20.0 [$-$69.6, 109.6] & +13.3 & 100\\
+Semantic & 20 [$-$25.0, 65.0] & 0.0 [$-$24.8, 24.8] & +3.3 & 96.7\\
+Preference & 55 [24.5, 85.5] & $-$13.3 [$-$150.2, 123.5] & 0.0 & 70.0\\
+Process & 100 [100, 100] & +13.3 [$-$87.1, 113.7] & +16.7 & 80.0\\\bottomrule
 \end{tabular}
-\caption{Reserved estimates table; rates are percentages and contrasts percentage points. Include diagnostic and effect intervals in the completed version. ``Pending'' is not zero.}
+\caption{Registered estimates. Rates are percentages and contrasts percentage points. Witness intervals are 95\% Student-$t$ intervals across four strategy-level rates (df $=3$); extra-loss intervals are 95\% Student-$t$ intervals across three repeats (df $=2$). Intervals are not clipped to feasible bounds and are not adjusted for eight comparisons. Accuracy effect is the combined-minus-outcome-only difference in accuracy improvement; reward attained is the fraction of terminal combined-condition samples at maximum reasoning reward.}\label{tab:results}
 \end{table}
 
-\paragraph{Predictive value.} \pending{Give family-held-out MAE for all five models, including the intercept, and each family-level error. State plainly if witness rate fails to improve on simpler predictors or if differences are too unstable to support a conclusion.}
+\paragraph{Monitoring loss.} Additional monitoring loss was indistinguishable from zero for seven of eight configurations. The 16-character length limit is the exception: $\widehat D=+63.3$ percentage points, with repeat-level contrasts of $+80$, $+60$ and $+50$ and an interval of $[25.4, 101.3]$. The same configuration also had the largest accuracy effect ($+30.0$ points), so the combined condition improved accuracy more while becoming harder to identify. With three repeats and eight unadjusted intervals, this is a lead to retest, not a confirmed effect. Two nulls are uninformative about compatibility for a separate reason: the zero-character configuration attained its reasoning reward in only 33.3\% of terminal samples, and the preference configuration in 70.0\%.
 
-\paragraph{Human audit.} \pending{Audit all 160 diagnostic transfers if feasible, retaining original model labels, blind human labels, disagreements, and adjudications. Register the human-audit procedure before inspecting final effects. Recomputed human-audited diagnostics are a separately labelled sensitivity analysis, not a replacement of the frozen primary diagnostic.}
+\paragraph{Predictive value.} Table~\ref{tab:mae} gives family-held-out mean absolute error for all five models. The witness rate (0.156) is essentially tied with the intercept-only reference (0.158). Description-only predictions (0.172), baseline reasoning length (0.218) and baseline identification rate (0.223) are worse than the intercept. Within families, the witness rate improves slightly on the intercept for string, semantic and process rewards and is worse for the length family; description-only prediction is best on string and process but worst on semantic. These family-level differences rest on single configurations and do not support a ranking. The registered diagnostic did not demonstrate predictive value at this scale.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lcccccc@{}}\toprule
+Predictor & Overall & Length & String & Semantic & Preference & Process\\\midrule
+Intercept only & 0.158 & 0.208 & 0.148 & 0.102 & 0.269 & 0.065\\
+Witness rate & 0.156 & 0.225 & 0.142 & 0.099 & 0.268 & 0.046\\
+Description-only & 0.172 & 0.225 & 0.070 & 0.212 & 0.311 & 0.045\\
+Baseline length & 0.218 & 0.210 & 0.111 & 0.088 & 0.253 & 0.431\\
+Baseline identification & 0.223 & 0.205 & 0.166 & 0.163 & 0.269 & 0.313\\\bottomrule
+\end{tabular}
+\caption{Leave-one-family-out mean absolute error for predicting additional monitoring loss, averaged equally over the five held-out families. Training folds overlap; these are not five independent tests.}\label{tab:mae}
+\end{table}
+
+\paragraph{Human audit.} The planned audit of the 160 diagnostic transfers has not been performed. The registered plan required freezing the audit procedure before inspecting final effects; that is no longer possible, because the final effects are public and were inspected in preparing this section. Any human audit will therefore be post hoc. It must be labelled as such, retain the original model labels alongside human labels and adjudications, and be reported as a sensitivity analysis rather than a replacement for the frozen primary diagnostic.
 
 \section{Limitations and interpretation}
 \paragraph{Construct validity.} Coin identification is not general oversight quality. Domain abstraction can make a derivation readable while making its coin origin unidentified under the fixed rubric. The semantic reward uses the same monitor prompt and model family as evaluation, although requests are fresh. This tests response to that monitor incentive, not evasion of an unseen monitor family. The evidence auditor's ability to check a correct derivation requires human validation.
@@ -180,7 +195,7 @@ Process & pending & pending & pending & pending\\\bottomrule
 
 \paragraph{Mechanism and external validity.} Output text does not identify private reasoning or its causal role. The model can potentially answer a short task without expressing a derivation. No activation access, reasoning intervention, model fine-tuning, human-preference collection, or adversarial code task is part of this study. We do not extrapolate to deployed safety monitors, harmful-intent detection, or arbitrary reward pairs. A moving model alias and sequential service calls leave residual time/version confounding despite interleaving.
 
-\paragraph{Draft timing and additional analysis.} The source protocol predates paid execution. This manuscript and its audit checklist were written while the run was ongoing. Any new analyses, human audit choices, or hypotheses introduced here must be time-stamped and distinguished from the frozen primary analysis. No novelty, positive result, or publication acceptance follows from preregistration or reproducibility alone.
+\paragraph{Draft timing and additional analysis.} The source protocol predates paid execution. This manuscript and its audit checklist were written while the run was ongoing; the results, abstract and conclusion were added on October 4, 2026, after export. Any new analyses, human audit choices, or hypotheses introduced here must be time-stamped and distinguished from the frozen primary analysis. No novelty, positive result, or publication acceptance follows from preregistration or reproducibility alone.
 
 \section{Reproducibility and operational record}
 The protocol is version \texttt{reward-compatibility-v0.1}, run \texttt{experiment-002-v01}. Initial registration is preserved at source commit \texttt{336232c}. The API ledger retains request identifiers, visible prompts and completions, token usage, charges, and ambiguous outcomes. Unknown billing retains a conservative reservation rather than triggering blind retries. The application cap is \$40, including a \$4 feasibility allowance; recorded price-based accounting is not a provider-invoice guarantee.
@@ -190,7 +205,7 @@ At main cursor 35, the owner requested an operational speedup. After pausing and
 After completion, \texttt{npm run export} verifies record counts and produces the manifest, scored records, estimates CSV, analysis JSON, and SVG figure without model calls. Full prompts live in \texttt{src/prompts.ts}; exact task and reward code in \texttt{src/protocol.ts}; analysis in \texttt{src/analysis.ts}. The source repository is \url{https://github.com/RaphaelKhalid/reward-compatibility}. The public observer is \url{https://autolabs-ebon.vercel.app/experiments/reward-compatibility}. Before submission, archive the final code/data snapshot and record the immutable archive identifier.
 
 \section{Conclusion}
-We have specified a bounded test of whether a readable-witness diagnostic predicts monitoring loss under API-based in-context optimization. The completed study must determine whether this diagnostic adds predictive value, fails in informative ways, or remains inconclusive. \pending{Write an evidence-based conclusion only after final export and audit. Do not describe the theoretical reward-classification problem as solved.}
+We tested whether a readable-witness diagnostic predicts monitoring loss under API-based in-context optimization. In this design it did not: its held-out error was essentially that of an intercept-only model, and the simpler alternatives did worse. Most configurations produced no detectable additional monitoring loss, and two produced too little reward attainment for their nulls to bear on compatibility. A 16-character length limit produced a consistent loss across all three repeats, which merits a larger, preregistered follow-up. These conclusions are limited by three repeats per arm, five reward families, a coin-identification surrogate for oversight, same-family model graders, and the absence of the planned human audit. Nothing here resolves the theoretical reward-classification problem.
 
 \section*{Author responsibility and AI assistance}
 This draft has one provisional human author. AI systems assisted implementation, source inspection, manuscript drafting, and the generation and scoring of experimental outputs. AI tools are not authors. The human author is responsible for verifying the methods, citations, data, analysis, and final claims. Human review of this manuscript and final evidence remains pending. No affiliation with or endorsement by the cited researchers, Google DeepMind, OpenAI, or model providers is implied.

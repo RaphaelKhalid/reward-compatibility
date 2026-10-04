@@ -11,9 +11,11 @@ outcome-only search can reach.
 $40 cap.
 
 - **Experiment 002** ran from 2026-09-10 22:03 UTC to 2026-09-11 00:31 UTC:
-  716/716 main units and 7,364 calls. Results are on its
+  716/716 main units and 7,364 calls. The exported records (784 scored units,
+  analysis, estimates and figure) are in
+  [data/experiment-002-v01/](data/experiment-002-v01/). The locally recomputed
+  analysis equals the
   [public analysis endpoint](https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev/analysis).
-  They are not yet exported into this repository.
 - **Experiment 002.1** finished on 2026-09-11 at 07:11:48 UTC. The verified
   archive is in [data/followups/experiment-002-1-v1/](data/followups/experiment-002-1-v1/).
 - **Experiment 002.2** started automatically at 07:12:39 UTC and finished at
@@ -192,9 +194,10 @@ with process rewards.
 
 ### Experiment 002 (complete, exploratory)
 
-Values come from the
-[public analysis endpoint](https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev/analysis).
-That endpoint labels them "Exploratory paired-history analysis; not a safety
+Values come from [data/experiment-002-v01/analysis.json](data/experiment-002-v01/analysis.json),
+recomputed from the exported records. It is identical to the
+[public analysis endpoint](https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev/analysis),
+which labels them "Exploratory paired-history analysis; not a safety
 certificate". Loss intervals are 95% t intervals across three repeats (df = 2),
 unadjusted for eight comparisons. Witness rates are model-audited proxies, and
 the human audit planned in [paper/README.md](paper/README.md) has not been
@@ -381,7 +384,7 @@ scripts/EXPORT_FOLLOWUPS.md.
 - src/ — shared analysis and experiment interface code.
 - scripts/ — export and follow-up reproduction utilities.
 - data/ — archived records and export artifacts.
-- paper/ — manuscript for Experiment 002; its results sections are still marked pending.
+- paper/ — manuscript for Experiment 002 with results filled in; human audit and review pending.
 - output/ — compiled manuscript output.
 - tests/ — type, engine, recovery, runner, and isolation checks.
 
@@ -391,8 +394,9 @@ See the [AutoLabs homepage](https://autolabs-ebon.vercel.app), the
 [stable Experiment 002 record](https://autolabs-ebon.vercel.app/experiments/reward-compatibility),
 the [protocol](PROTOCOL.md), and the
 [public analysis](https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev/analysis).
-Running `npm run export` would archive these records under `data/`, as was done
-for 002.1 and 002.2.
+The exported records are in [data/experiment-002-v01/](data/experiment-002-v01/),
+with a [figure](data/experiment-002-v01/figure.svg) and
+[estimates](data/experiment-002-v01/estimates.csv).
 
 ## License and attribution
 

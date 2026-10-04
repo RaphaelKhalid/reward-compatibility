@@ -1,10 +1,10 @@
 # Manuscript
 
-`main.tex` is a pre-results scientific manuscript, not an arXiv-ready submission. The experiment's primary protocol is unchanged. It contains no fabricated results or synthetic result plots. The sole-author byline is provisional pending confirmation of the exact name/affiliation.
+`main.tex` reports the completed Experiment 002 results (added October 4, 2026) but is not an arXiv-ready submission. The human audit, human review and authorship confirmation below are still outstanding. The experiment's primary protocol is unchanged. It contains no fabricated results or synthetic result plots. The sole-author byline is provisional pending confirmation of the exact name/affiliation.
 
 ## Build
 
-From `paper/`, use `pdflatex main.tex` twice, or `tectonic main.tex`. The bibliography is embedded so BibTeX is not required. A compiled preview is kept in `../output/pdf/main.pdf`; the preview and source must be updated together after edits. Standard TeX packages are used; no shell escape is required.
+From `paper/`, use `pdflatex main.tex` twice, or `tectonic main.tex`. The bibliography is embedded so BibTeX is not required. A compiled preview is kept in `../output/pdf/main.pdf`; the preview and source must be updated together after edits. The preview currently predates the October 4 results update and needs rebuilding. Standard TeX packages are used; no shell escape is required.
 
 ## Complete after the study
 
