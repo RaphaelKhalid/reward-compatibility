@@ -5,7 +5,7 @@ import {spawnSync} from 'node:child_process';
 const [action,envFile]=process.argv.slice(2);
 if(!envFile)throw new Error('Usage: node scripts/admin.mjs secrets|start|pause|resume path-to-private-env');
 const env=parseEnv(readFileSync(envFile,'utf8'));
-const url='https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev';
+const url='https://autolabs-reward-compatibility.noriron.workers.dev';
 if(action==='secrets') {
   if(!env.OPENAI_API_KEY||!env.ADMIN_TOKEN)throw new Error('Required secret names not found');
   const result=spawnSync(process.execPath,['node_modules/wrangler/bin/wrangler.js','secret','bulk'],{
