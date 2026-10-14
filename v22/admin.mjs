@@ -2,7 +2,7 @@
 import {readFileSync} from 'node:fs';
 import {parseEnv} from 'node:util';
 import {spawnSync} from 'node:child_process';
-const action=process.argv[2],base='https://autolabs-reward-categories-22.raphaelbahadurkhan.workers.dev';
+const action=process.argv[2],base='https://autolabs-reward-categories-22.noriron.workers.dev';
 if(action==='secrets'){
   const vars=parseEnv(readFileSync(new URL('../.dev.vars',import.meta.url),'utf8'));
   if(!vars.OPENAI_API_KEY||!vars.ADMIN_TOKEN)throw Error('Missing configured credentials');

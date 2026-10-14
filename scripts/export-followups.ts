@@ -67,7 +67,7 @@ export function configuration(experiment: Experiment) {
   }}));
   return {
     experiment, folder: experiment === '002.1' ? 'v21' : 'v22', runId: p.RUN_ID, version: p.VERSION,
-    origin: experiment === '002.1' ? 'https://autolabs-compatibility-21.raphaelbahadurkhan.workers.dev' : 'https://autolabs-reward-categories-22.raphaelbahadurkhan.workers.dev',
+    origin: experiment === '002.1' ? 'https://autolabs-compatibility-21.noriron.workers.dev' : 'https://autolabs-reward-categories-22.noriron.workers.dev',
     protocol: p.PROTOCOL, buildHash, jobs, model: p.MODEL, reservation: p.reservation,
     protocolHash: sha256(JSON.stringify(experiment === '002.1' ? {protocol: p.PROTOCOL, cases, build: buildHash} : {protocol: p.PROTOCOL, plan, build: buildHash})),
     callsTotal: jobs.reduce((n, job) => n + job.steps, 0), amendment: `${experiment}-http5xx-abstention-accounting-v1`,

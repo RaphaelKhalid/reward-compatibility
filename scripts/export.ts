@@ -3,7 +3,7 @@ import {resolve} from 'node:path';
 import {analyze} from '../src/analysis';
 import {RUN_ID,VERSION,gatePlan,mainPlan,type UnitResult} from '../src/protocol';
 
-const origin='https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev';
+const origin='https://autolabs-reward-compatibility.noriron.workers.dev';
 async function get(path:string){const r=await fetch(origin+path,{signal:AbortSignal.timeout(30000)});if(!r.ok)throw Error(`Read failed: ${r.status}`);return r.json();}
 const status=await get('/status');
 if(status.status!=='complete')throw Error('Evaluation remains sealed. No final figure will be generated from an unfinished run.');

@@ -15,14 +15,14 @@ $40 cap.
   analysis, estimates and figure) are in
   [data/experiment-002-v01/](data/experiment-002-v01/). The locally recomputed
   analysis equals the
-  [public analysis endpoint](https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev/analysis).
+  [public analysis endpoint](https://autolabs-reward-compatibility.noriron.workers.dev/analysis).
 - **Experiment 002.1** finished on 2026-09-11 at 07:11:48 UTC. The verified
   archive is in [data/followups/experiment-002-1-v1/](data/followups/experiment-002-1-v1/).
 - **Experiment 002.2** started automatically at 07:12:39 UTC and finished at
   08:04:15 UTC the same day: 4,116/4,116 calls and zero failed or malformed
   calls. The verified archive is in
   [data/followups/experiment-002-2-v1/](data/followups/experiment-002-2-v1/),
-  and the [final analysis](https://autolabs-reward-categories-22.raphaelbahadurkhan.workers.dev/analysis)
+  and the [final analysis](https://autolabs-reward-categories-22.noriron.workers.dev/analysis)
   remains public.
 
 **Results in one line each:** the readable-witness rate did not beat an
@@ -170,7 +170,7 @@ The verified archive contains replayed prompts/results and reproduced analysis:
 [data/followups/experiment-002-1-v1/EXPORT_COMPLETE.json](data/followups/experiment-002-1-v1/EXPORT_COMPLETE.json).
 Use the [export instructions](scripts/EXPORT_FOLLOWUPS.md). The public records
 remain available through the
-[final analysis](https://autolabs-compatibility-21.raphaelbahadurkhan.workers.dev/analysis).
+[final analysis](https://autolabs-compatibility-21.noriron.workers.dev/analysis).
 Reported usage was $1.34718 plus a $0.003135 uncertain-charge allowance.
 
 ### Exact finite calibration
@@ -196,7 +196,7 @@ with process rewards.
 
 Values come from [data/experiment-002-v01/analysis.json](data/experiment-002-v01/analysis.json),
 recomputed from the exported records. It is identical to the
-[public analysis endpoint](https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev/analysis),
+[public analysis endpoint](https://autolabs-reward-compatibility.noriron.workers.dev/analysis),
 which labels them "Exploratory paired-history analysis; not a safety
 certificate". Loss intervals are 95% t intervals across three repeats (df = 2),
 unadjusted for eight comparisons. Witness rates are model-audited proxies, and
@@ -393,7 +393,7 @@ scripts/EXPORT_FOLLOWUPS.md.
 See the [AutoLabs homepage](https://autolabs-ebon.vercel.app), the
 [stable Experiment 002 record](https://autolabs-ebon.vercel.app/experiments/reward-compatibility),
 the [protocol](PROTOCOL.md), and the
-[public analysis](https://autolabs-reward-compatibility.raphaelbahadurkhan.workers.dev/analysis).
+[public analysis](https://autolabs-reward-compatibility.noriron.workers.dev/analysis).
 The exported records are in [data/experiment-002-v01/](data/experiment-002-v01/),
 with a [figure](data/experiment-002-v01/figure.svg) and
 [estimates](data/experiment-002-v01/estimates.csv).
