@@ -12,3 +12,6 @@ paper/*.aux
 paper/*.out
 paper/*.toc
 paper/*.synctex.gz
+
+# local agent notes (kept out of the repo)
+/BUILD_STATUS.md
